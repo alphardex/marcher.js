@@ -1,0 +1,113 @@
+import { compact, deg2rad, joinLine, toFixed2 } from "../utils";
+
+export interface SDFConfig {
+  pointVarName: string;
+  sdfVarName: string;
+  materialId: string;
+}
+
+class PrimitiveSDF {
+  pointVarName: string;
+  sdfVarName: string;
+  materialId: string;
+  isVisible: boolean;
+  operations: string[];
+  translates: string[];
+  rotates: string[];
+  scaleValue: string;
+  constructor(config: Partial<SDFConfig> = {}) {
+    const {
+      pointVarName = "q",
+      sdfVarName = "dt",
+      materialId = "26.9",
+    } = config;
+    this.pointVarName = pointVarName;
+    this.sdfVarName = sdfVarName;
+    this.materialId = materialId;
+    this.isVisible = true;
+    this.operations = [];
+    this.translates = [];
+    this.rotates = [];
+    this.scaleValue = "1.00";
+  }
+  get shader() {
+    return ``;
+  }
+  get addExisting() {
+    return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;
+  }
+  get operationsShader() {
+    return joinLine(this.operations);
+  }
+  get totalShader() {
+    return joinLine(
+      compact([
+        this.translates,
+        this.rotates,
+        this.shader,
+        this.operationsShader,
+        this.isVisible ? this.addExisting : "",
+      ])
+    );
+  }
+  show() {
+    this.isVisible = true;
+  }
+  hide() {
+    this.isVisible = false;
+  }
+  translate(x = 0, y = 0, z = 0) {
+    this.translates.push(
+      `${this.pointVarName}+=vec3(${toFixed2(x)},${toFixed2(y)},${toFixed2(
+        z
+      )});`
+    );
+  }
+  rotate(deg = 0, axis = "x") {
+    this.rotates.push(
+      `${this.pointVarName}=rotate${axis.toUpperCase()}(${toFixed2(
+        deg2rad(deg)
+      )});`
+    );
+  }
+  scale(value = 1) {
+    this.scaleValue = toFixed2(value);
+  }
+  round(value = 0.1) {
+    this.operations.push(
+      `${this.sdfVarName}=opRound(${this.sdfVarName},${value});`
+    );
+  }
+  union(sdf: PrimitiveSDF) {
+    this.operations.push(
+      `${this.sdfVarName}=opUnion(${this.sdfVarName},${sdf.sdfVarName});`
+    );
+  }
+  intersect(sdf: PrimitiveSDF) {
+    this.operations.push(
+      `${this.sdfVarName}=opIntersection(${this.sdfVarName},${sdf.sdfVarName});`
+    );
+  }
+  subtract(sdf: PrimitiveSDF) {
+    this.operations.push(
+      `${this.sdfVarName}=opSubtraction(${this.sdfVarName},${sdf.sdfVarName});`
+    );
+  }
+  smoothUnion(sdf: PrimitiveSDF, value = 0.1) {
+    this.operations.push(
+      `${this.sdfVarName}=opSmoothUnion(${this.sdfVarName},${sdf.sdfVarName},${value});`
+    );
+  }
+  smoothIntersect(sdf: PrimitiveSDF, value = 0.1) {
+    this.operations.push(
+      `${this.sdfVarName}=opSmoothIntersection(${this.sdfVarName},${sdf.sdfVarName},${value});`
+    );
+  }
+  smoothSubtract(sdf: PrimitiveSDF, value = 0.1) {
+    this.operations.push(
+      `${this.sdfVarName}=opSmoothSubtraction(${this.sdfVarName},${sdf.sdfVarName},${value});`
+    );
+  }
+}
+
+export { PrimitiveSDF };

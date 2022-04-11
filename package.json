@@ -1,0 +1,12 @@
+{
+  "name": "marcher.js",
+  "version": "1.0.0",
+  "description": "A raymarching shader generator.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "alphardex",
+  "license": "MIT"
+}
