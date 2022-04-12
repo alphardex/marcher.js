@@ -12,8 +12,6 @@ class SDFLayer {
   get shader() {
     return `
       {
-        vec3 q=pos;
-        
         ${joinLine(this.primitives.map((item) => item.totalShader))}
       }
       `;

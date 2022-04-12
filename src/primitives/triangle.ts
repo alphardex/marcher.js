@@ -1,12 +1,9 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface TriangleSDFConfig {
+export interface TriangleSDFConfig extends SDFConfig {
   value1: number;
   value2: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class TriangleSDF extends PrimitiveSDF {

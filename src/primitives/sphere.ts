@@ -1,11 +1,8 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface SphereSDFConfig {
+export interface SphereSDFConfig extends SDFConfig {
   radius: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class SphereSDF extends PrimitiveSDF {

@@ -2,37 +2,34 @@ import { DEFAULT_MATERIAL_ID } from "../components";
 import { compact, deg2rad, joinLine, toFixed2 } from "../utils";
 
 export interface SDFConfig {
-  pointVarName: string;
   sdfVarName: string;
   materialId: string;
 }
 
 class PrimitiveSDF {
-  pointVarName: string;
   sdfVarName: string;
   materialId: string;
   isVisible: boolean;
   operations: string[];
-  translates: string[];
-  rotates: string[];
+  transforms: string[];
   scaleValue: number;
   constructor(config: Partial<SDFConfig> = {}) {
-    const {
-      pointVarName = "q",
-      sdfVarName = "dt",
-      materialId = DEFAULT_MATERIAL_ID,
-    } = config;
-    this.pointVarName = pointVarName;
+    const { sdfVarName = "dt", materialId = DEFAULT_MATERIAL_ID } = config;
     this.sdfVarName = sdfVarName;
     this.materialId = materialId;
     this.isVisible = true;
     this.operations = [];
-    this.translates = [];
-    this.rotates = [];
+    this.transforms = [];
     this.scaleValue = 1;
+  }
+  get pointVarName() {
+    return `${this.sdfVarName}p`;
   }
   get shader() {
     return ``;
+  }
+  get pointShader() {
+    return `vec3 ${this.pointVarName}=pos;`;
   }
   get addExisting() {
     return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;
@@ -43,8 +40,8 @@ class PrimitiveSDF {
   get totalShader() {
     return joinLine(
       compact([
-        this.translates,
-        this.rotates,
+        this.pointShader,
+        this.transforms,
         this.shader,
         this.operationsShader,
         this.isVisible ? this.addExisting : "",
@@ -58,14 +55,14 @@ class PrimitiveSDF {
     this.isVisible = false;
   }
   translate(x = 0, y = 0, z = 0) {
-    this.translates.push(
+    this.transforms.push(
       `${this.pointVarName}+=vec3(${toFixed2(x)},${toFixed2(y)},${toFixed2(
         z
       )});`
     );
   }
   rotate(deg = 0, axis = "x") {
-    this.rotates.push(
+    this.transforms.push(
       `${this.pointVarName}=rotate${axis.toUpperCase()}(${
         this.pointVarName
       },${toFixed2(deg2rad(deg))});`

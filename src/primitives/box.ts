@@ -1,13 +1,10 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface BoxSDFConfig {
+export interface BoxSDFConfig extends SDFConfig {
   width: number;
   height: number;
   depth: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class BoxSDF extends PrimitiveSDF {

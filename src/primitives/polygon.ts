@@ -1,14 +1,11 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface PolygonSDFConfig {
+export interface PolygonSDFConfig extends SDFConfig {
   edgeCount: number;
   value1: number;
   value2: number;
   value3: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class PolygonSDF extends PrimitiveSDF {

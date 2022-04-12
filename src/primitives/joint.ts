@@ -1,16 +1,13 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface JointSDFConfig {
+export interface JointSDFConfig extends SDFConfig {
   x1: number;
   y1: number;
   z1: number;
   x2: number;
   y2: number;
   z2: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class JointSDF extends PrimitiveSDF {

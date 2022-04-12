@@ -1,12 +1,9 @@
 import { toFixed2 } from "../utils";
-import { PrimitiveSDF } from "./primitive";
+import { PrimitiveSDF, SDFConfig } from "./primitive";
 
-export interface CylinderSDFConfig {
+export interface CylinderSDFConfig extends SDFConfig {
   radius: number;
   height: number;
-  pointVarName: string;
-  sdfVarName: string;
-  materialId: string;
 }
 
 class CylinderSDF extends PrimitiveSDF {
