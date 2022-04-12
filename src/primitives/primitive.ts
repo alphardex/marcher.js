@@ -66,9 +66,9 @@ class PrimitiveSDF {
   }
   rotate(deg = 0, axis = "x") {
     this.rotates.push(
-      `${this.pointVarName}=rotate${axis.toUpperCase()}(${toFixed2(
-        deg2rad(deg)
-      )});`
+      `${this.pointVarName}=rotate${axis.toUpperCase()}(${
+        this.pointVarName
+      },${toFixed2(deg2rad(deg))});`
     );
   }
   scale(value = 1) {
