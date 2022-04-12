@@ -1,3 +1,4 @@
+import { toFixed2 } from "../utils";
 import { PrimitiveSDF } from "./primitive";
 
 export interface BoxSDFConfig {
@@ -21,7 +22,11 @@ class BoxSDF extends PrimitiveSDF {
     this.depth = depth;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdBox(${this.pointVarName}/${this.scaleValue},vec3(${this.width},${this.height},${this.depth}))*${this.scaleValue};`;
+    return `float ${this.sdfVarName}=sdBox(${this.pointVarName}/${toFixed2(
+      this.scaleValue
+    )},vec3(${toFixed2(this.width)},${toFixed2(this.height)},${toFixed2(
+      this.depth
+    )}))*${toFixed2(this.scaleValue)};`;
   }
 }
 

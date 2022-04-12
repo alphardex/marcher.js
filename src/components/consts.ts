@@ -1,0 +1,3 @@
+const DEFAULT_MATERIAL_ID = "26.9";
+
+export { DEFAULT_MATERIAL_ID };

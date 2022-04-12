@@ -1,3 +1,4 @@
+import { DEFAULT_MATERIAL_ID } from "../components";
 import { compact, deg2rad, joinLine, toFixed2 } from "../utils";
 
 export interface SDFConfig {
@@ -14,12 +15,12 @@ class PrimitiveSDF {
   operations: string[];
   translates: string[];
   rotates: string[];
-  scaleValue: string;
+  scaleValue: number;
   constructor(config: Partial<SDFConfig> = {}) {
     const {
       pointVarName = "q",
       sdfVarName = "dt",
-      materialId = "26.9",
+      materialId = DEFAULT_MATERIAL_ID,
     } = config;
     this.pointVarName = pointVarName;
     this.sdfVarName = sdfVarName;
@@ -28,7 +29,7 @@ class PrimitiveSDF {
     this.operations = [];
     this.translates = [];
     this.rotates = [];
-    this.scaleValue = "1.00";
+    this.scaleValue = 1;
   }
   get shader() {
     return ``;
@@ -71,11 +72,11 @@ class PrimitiveSDF {
     );
   }
   scale(value = 1) {
-    this.scaleValue = toFixed2(value);
+    this.scaleValue = value;
   }
   round(value = 0.1) {
     this.operations.push(
-      `${this.sdfVarName}=opRound(${this.sdfVarName},${value});`
+      `${this.sdfVarName}=opRound(${this.sdfVarName},${toFixed2(value)});`
     );
   }
   union(sdf: PrimitiveSDF) {
@@ -95,17 +96,23 @@ class PrimitiveSDF {
   }
   smoothUnion(sdf: PrimitiveSDF, value = 0.1) {
     this.operations.push(
-      `${this.sdfVarName}=opSmoothUnion(${this.sdfVarName},${sdf.sdfVarName},${value});`
+      `${this.sdfVarName}=opSmoothUnion(${this.sdfVarName},${
+        sdf.sdfVarName
+      },${toFixed2(value)});`
     );
   }
   smoothIntersect(sdf: PrimitiveSDF, value = 0.1) {
     this.operations.push(
-      `${this.sdfVarName}=opSmoothIntersection(${this.sdfVarName},${sdf.sdfVarName},${value});`
+      `${this.sdfVarName}=opSmoothIntersection(${this.sdfVarName},${
+        sdf.sdfVarName
+      },${toFixed2(value)});`
     );
   }
   smoothSubtract(sdf: PrimitiveSDF, value = 0.1) {
     this.operations.push(
-      `${this.sdfVarName}=opSmoothSubtraction(${this.sdfVarName},${sdf.sdfVarName},${value});`
+      `${this.sdfVarName}=opSmoothSubtraction(${this.sdfVarName},${
+        sdf.sdfVarName
+      },${toFixed2(value)});`
     );
   }
 }

@@ -20,9 +20,7 @@ class SDFRender {
             
             vec3 nor=(m<1.5)?vec3(0.,1.,0.):calcNormal(pos);
             
-            
             col=material(col,pos,m,nor);
-            
             
             col=lighting(col,pos,rd,nor);
         }

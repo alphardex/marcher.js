@@ -1,3 +1,4 @@
+import { toFixed2 } from "../utils";
 import { PrimitiveSDF } from "./primitive";
 
 export interface SphereSDFConfig {
@@ -15,7 +16,9 @@ class SphereSDF extends PrimitiveSDF {
     this.radius = radius;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdSphere(${this.pointVarName}/${this.scaleValue},${this.radius})*${this.scaleValue};`;
+    return `float ${this.sdfVarName}=sdSphere(${this.pointVarName}/${toFixed2(
+      this.scaleValue
+    )},${toFixed2(this.radius)})*${toFixed2(this.scaleValue)};`;
   }
 }
 
