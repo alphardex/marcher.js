@@ -1,12 +1,19 @@
 {
   "name": "marcher.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A raymarching shader generator.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && rollup -c"
   },
   "author": "alphardex",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.3",
+    "@rollup/plugin-node-resolve": "^13.2.0",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "rollup": "^2.70.1",
+    "rollup-plugin-terser": "^7.0.2"
+  }
 }
