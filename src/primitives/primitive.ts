@@ -34,6 +34,9 @@ class PrimitiveSDF {
   get addExisting() {
     return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;
   }
+  get transformsShader() {
+    return joinLine(this.transforms);
+  }
   get operationsShader() {
     return joinLine(this.operations);
   }
@@ -41,7 +44,7 @@ class PrimitiveSDF {
     return joinLine(
       compact([
         this.pointShader,
-        this.transforms,
+        this.transformsShader,
         this.shader,
         this.operationsShader,
         this.isVisible ? this.addExisting : "",
