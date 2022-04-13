@@ -4,6 +4,8 @@ import { compact, deg2rad, joinLine, toFixed2 } from "../utils";
 export interface SDFConfig {
   sdfVarName: string;
   materialId: string;
+  isVisible: boolean;
+  scale: number;
 }
 
 class PrimitiveSDF {
@@ -15,14 +17,19 @@ class PrimitiveSDF {
   transforms: string[];
   scaleValue: number;
   constructor(config: Partial<SDFConfig> = {}) {
-    const { sdfVarName = "dt", materialId = DEFAULT_MATERIAL_ID } = config;
+    const {
+      sdfVarName = "dt",
+      materialId = DEFAULT_MATERIAL_ID,
+      isVisible = true,
+      scale = 1,
+    } = config;
     this.sdfVarName = sdfVarName;
     this.materialId = materialId;
-    this.isVisible = true;
+    this.isVisible = isVisible;
     this.operationsBefore = [];
     this.operationsAfter = [];
     this.transforms = [];
-    this.scaleValue = 1;
+    this.scaleValue = scale;
   }
   get pointVarName() {
     return `${this.sdfVarName}p`;

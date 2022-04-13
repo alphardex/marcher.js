@@ -21,7 +21,7 @@ class SDFMaterial {
   get shader() {
     return `
       vec3 material(in vec3 col,in vec3 pos,in float m,in vec3 nor){
-        col=.2+.2*sin(m*2.+vec3(0.,1.,2.));
+        col=vec3(153.,204.,255.)/255.;
         
         ${joinLine(this.materials)}
         

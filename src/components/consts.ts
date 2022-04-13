@@ -1,3 +1,3 @@
-const DEFAULT_MATERIAL_ID = "26.9";
+const DEFAULT_MATERIAL_ID = "114514.";
 
 export { DEFAULT_MATERIAL_ID };

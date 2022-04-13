@@ -496,12 +496,7 @@ float ao(in vec3 pos,in vec3 nor)
 const defaultShaderMaterial = `
 vec3 material(in vec3 col,in vec3 pos,in float m,in vec3 nor){
     // common material
-    col=.2+.2*sin(m*2.+vec3(0.,1.,2.));
-    
-    // material
-    if(m==26.9){
-        col=vec3(153.,204.,255.)/255.;
-    }
+    col=vec3(153.,204.,255.)/255.;
     
     return col;
 }
