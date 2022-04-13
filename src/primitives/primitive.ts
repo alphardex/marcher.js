@@ -121,65 +121,14 @@ class PrimitiveSDF {
       },${toFixed2(value)});`
     );
   }
-  elongate(x = 0, y = 0, z = 0) {
-    this.operationsAfter.push(
-      `${this.sdfVarName}=opElongate(${this.sdfVarName},vec3(${toFixed2(
-        x
-      )},${toFixed2(y)},${toFixed2(z)}));`
-    );
-  }
-  onion(value = 0.1) {
-    this.operationsAfter.push(
-      `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
-    );
-  }
-  extrude(value = 0.1) {
-    this.operationsAfter.push(
-      `${this.sdfVarName}=opExtrusion(${this.pointVarName},${
-        this.sdfVarName
-      },${toFixed2(value)});`
-    );
-  }
-  revolve(value = 0.1) {
-    this.operationsBefore.push(
-      `${this.pointVarName}=opRevolution(${this.pointVarName},${toFixed2(
-        value
-      )});`
-    );
-  }
-  length2() {
-    this.operationsBefore.push(
-      `${this.pointVarName}=length2(${this.pointVarName});`
-    );
-  }
-  length4() {
-    this.operationsBefore.push(
-      `${this.pointVarName}=length4(${this.pointVarName});`
-    );
-  }
-  length6() {
-    this.operationsBefore.push(
-      `${this.pointVarName}=length6(${this.pointVarName});`
-    );
-  }
-  length8() {
-    this.operationsBefore.push(
-      `${this.pointVarName}=length8(${this.pointVarName});`
-    );
-  }
-  sym(axis = "x") {
-    this.operationsBefore.push(
-      `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
-    );
-  }
-  rep(x = 1, y = 1, z = 1) {
+  rep(x = 3, y = 3, z = 3) {
     this.operationsBefore.push(
       `${this.pointVarName}=opRep(${this.pointVarName},vec3(${toFixed2(
         x
       )},${toFixed2(y)},${toFixed2(z)}));`
     );
   }
-  repLim(s = 1, x1 = 1, y1 = 1, z1 = 1, x2 = 1, y2 = 1, z2 = 1) {
+  repLim(s = 2, x1 = 0, y1 = 0, z1 = 0, x2 = 1, y2 = 1, z2 = 1) {
     this.operationsBefore.push(
       `${this.pointVarName}=opRepLim(${this.pointVarName},${toFixed2(
         s
@@ -188,18 +137,70 @@ class PrimitiveSDF {
       )},${toFixed2(y2)},${toFixed2(z2)}));`
     );
   }
-  twist(value = 0.1) {
+  twist(value = 3) {
     this.operationsBefore.push(
       `${this.pointVarName}=opTwist(${this.pointVarName},${toFixed2(value)});`
     );
   }
-  cheapBend(value = 0.1) {
+  cheapBend(value = 1) {
     this.operationsBefore.push(
       `${this.pointVarName}=opCheapBend(${this.pointVarName},${toFixed2(
         value
       )});`
     );
   }
+  // Methods TODO
+  // sym(axis = "x") {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
+  //   );
+  // }
+  // elongate(x = 0, y = 0, z = 0) {
+  //   this.operationsAfter.push(
+  //     `${this.sdfVarName}=opElongate(${this.sdfVarName},vec3(${toFixed2(
+  //       x
+  //     )},${toFixed2(y)},${toFixed2(z)}));`
+  //   );
+  // }
+  // onion(value = 0.1) {
+  //   this.operationsAfter.push(
+  //     `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
+  //   );
+  // }
+  // extrude(value = 0.1) {
+  //   this.operationsAfter.push(
+  //     `${this.sdfVarName}=opExtrusion(${this.pointVarName},${
+  //       this.sdfVarName
+  //     },${toFixed2(value)});`
+  //   );
+  // }
+  // revolve(value = 0.1) {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=opRevolution(${this.pointVarName},${toFixed2(
+  //       value
+  //     )});`
+  //   );
+  // }
+  // length2() {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=length2(${this.pointVarName});`
+  //   );
+  // }
+  // length4() {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=length4(${this.pointVarName});`
+  //   );
+  // }
+  // length6() {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=length6(${this.pointVarName});`
+  //   );
+  // }
+  // length8() {
+  //   this.operationsBefore.push(
+  //     `${this.pointVarName}=length8(${this.pointVarName});`
+  //   );
+  // }
 }
 
 export { PrimitiveSDF };

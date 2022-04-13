@@ -600,6 +600,7 @@ export interface MarcherConfig {
 }
 
 class Marcher {
+  utilFunction: string;
   mapFunction: SDFMapFunction | null;
   material: SDFMaterial | null;
   lighting: string | null;
@@ -607,6 +608,7 @@ class Marcher {
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
   constructor(config: Partial<MarcherConfig> = {}) {
+    this.utilFunction = "";
     this.mapFunction = null;
     this.material = null;
     this.lighting = null;
@@ -621,6 +623,9 @@ class Marcher {
     if (skybox) {
       this.render.setSkyBox(skybox);
     }
+  }
+  setUtilFunction(str: string) {
+    this.utilFunction = str;
   }
   setMapFunction(mapFunction: SDFMapFunction) {
     this.mapFunction = mapFunction;
@@ -664,6 +669,8 @@ class Marcher {
   get fragmentShader() {
     return `
     ${this.shaderSDFUtils}
+
+    ${this.utilFunction}
 
     ${this.shaderMapFunction}
 
