@@ -2,6 +2,8 @@ import type { SDFMapFunction } from "../components/mapFunction";
 import type { SDFMaterial } from "../components/material";
 import { SDFRender } from "../components";
 import { SDFMainImage } from "../components";
+import { GroupSDF } from "../primitives/group";
+import { joinLine } from "../utils";
 
 const defaultShaderSDFUtils = `
 // all sdfs
@@ -602,6 +604,7 @@ class Marcher {
   render: SDFRender;
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
+  groups: GroupSDF[];
   constructor(config: Partial<MarcherConfig> = {}) {
     this.utilFunction = "";
     this.mapFunction = null;
@@ -610,6 +613,7 @@ class Marcher {
     this.render = new SDFRender();
     this.getSceneColor = null;
     this.mainImage = new SDFMainImage();
+    this.groups = [];
 
     const { antialias = false, skybox = "vec3(10.,10.,10.)/255." } = config;
     if (antialias) {
@@ -633,6 +637,9 @@ class Marcher {
   }
   setGetSceneColor(getSceneColor: string) {
     this.getSceneColor = getSceneColor;
+  }
+  addGroup(group: GroupSDF) {
+    this.groups.push(group);
   }
   get shaderSDFUtils() {
     return defaultShaderSDFUtils;
@@ -661,11 +668,16 @@ class Marcher {
   get shaderMainImage() {
     return this.mainImage?.shader || defaultShaderMainImage;
   }
+  get shaderGroupFunctions() {
+    return joinLine(this.groups.map((item) => item.functionShader));
+  }
   get fragmentShader() {
     return `
     ${this.shaderSDFUtils}
 
     ${this.utilFunction}
+
+    ${this.shaderGroupFunctions}
 
     ${this.shaderMapFunction}
 
