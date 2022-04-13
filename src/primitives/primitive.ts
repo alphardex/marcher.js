@@ -10,7 +10,8 @@ class PrimitiveSDF {
   sdfVarName: string;
   materialId: string;
   isVisible: boolean;
-  operations: string[];
+  operationsBefore: string[];
+  operationsAfter: string[];
   transforms: string[];
   scaleValue: number;
   constructor(config: Partial<SDFConfig> = {}) {
@@ -18,7 +19,8 @@ class PrimitiveSDF {
     this.sdfVarName = sdfVarName;
     this.materialId = materialId;
     this.isVisible = true;
-    this.operations = [];
+    this.operationsBefore = [];
+    this.operationsAfter = [];
     this.transforms = [];
     this.scaleValue = 1;
   }
@@ -37,16 +39,20 @@ class PrimitiveSDF {
   get transformsShader() {
     return joinLine(this.transforms);
   }
-  get operationsShader() {
-    return joinLine(this.operations);
+  get operationsBeforeShader() {
+    return joinLine(this.operationsBefore);
+  }
+  get operationsAfterShader() {
+    return joinLine(this.operationsAfter);
   }
   get totalShader() {
     return joinLine(
       compact([
         this.pointShader,
         this.transformsShader,
+        this.operationsBeforeShader,
         this.shader,
-        this.operationsShader,
+        this.operationsAfterShader,
         this.isVisible ? this.addExisting : "",
       ])
     );
@@ -75,44 +81,123 @@ class PrimitiveSDF {
     this.scaleValue = value;
   }
   round(value = 0.1) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opRound(${this.sdfVarName},${toFixed2(value)});`
     );
   }
   union(sdf: PrimitiveSDF) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opUnion(${this.sdfVarName},${sdf.sdfVarName});`
     );
   }
   intersect(sdf: PrimitiveSDF) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opIntersection(${this.sdfVarName},${sdf.sdfVarName});`
     );
   }
   subtract(sdf: PrimitiveSDF) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opSubtraction(${this.sdfVarName},${sdf.sdfVarName});`
     );
   }
   smoothUnion(sdf: PrimitiveSDF, value = 0.1) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opSmoothUnion(${this.sdfVarName},${
         sdf.sdfVarName
       },${toFixed2(value)});`
     );
   }
   smoothIntersect(sdf: PrimitiveSDF, value = 0.1) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opSmoothIntersection(${this.sdfVarName},${
         sdf.sdfVarName
       },${toFixed2(value)});`
     );
   }
   smoothSubtract(sdf: PrimitiveSDF, value = 0.1) {
-    this.operations.push(
+    this.operationsAfter.push(
       `${this.sdfVarName}=opSmoothSubtraction(${this.sdfVarName},${
         sdf.sdfVarName
       },${toFixed2(value)});`
+    );
+  }
+  elongate(x = 0, y = 0, z = 0) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opElongate(${this.sdfVarName},vec3(${toFixed2(
+        x
+      )},${toFixed2(y)},${toFixed2(z)}));`
+    );
+  }
+  onion(value = 0.1) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
+    );
+  }
+  extrude(value = 0.1) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opExtrusion(${this.pointVarName},${
+        this.sdfVarName
+      },${toFixed2(value)});`
+    );
+  }
+  revolve(value = 0.1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opRevolution(${this.pointVarName},${toFixed2(
+        value
+      )});`
+    );
+  }
+  length2() {
+    this.operationsBefore.push(
+      `${this.pointVarName}=length2(${this.pointVarName});`
+    );
+  }
+  length4() {
+    this.operationsBefore.push(
+      `${this.pointVarName}=length4(${this.pointVarName});`
+    );
+  }
+  length6() {
+    this.operationsBefore.push(
+      `${this.pointVarName}=length6(${this.pointVarName});`
+    );
+  }
+  length8() {
+    this.operationsBefore.push(
+      `${this.pointVarName}=length8(${this.pointVarName});`
+    );
+  }
+  sym(axis = "x") {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
+    );
+  }
+  rep(x = 1, y = 1, z = 1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opRep(${this.pointVarName},vec3(${toFixed2(
+        x
+      )},${toFixed2(y)},${toFixed2(z)}));`
+    );
+  }
+  repLim(s = 1, x1 = 1, y1 = 1, z1 = 1, x2 = 1, y2 = 1, z2 = 1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opRepLim(${this.pointVarName},${toFixed2(
+        s
+      )},vec3(${toFixed2(x1)},${toFixed2(y1)},${toFixed2(z1)}),vec3(${toFixed2(
+        x2
+      )},${toFixed2(y2)},${toFixed2(z2)}));`
+    );
+  }
+  twist(value = 0.1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opTwist(${this.pointVarName},${toFixed2(value)});`
+    );
+  }
+  cheapBend(value = 0.1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opCheapBend(${this.pointVarName},${toFixed2(
+        value
+      )});`
     );
   }
 }
