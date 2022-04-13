@@ -36,7 +36,7 @@ class GroupSDF extends PrimitiveSDF {
     `;
   }
   get shader() {
-    return `vec2 ${this.sdfVarName}=${this.name}(${this.pointVarName})`;
+    return `vec2 ${this.sdfVarName}=${this.name}(${this.pointVarName});`;
   }
   get addExisting() {
     return `res=opUnion(res,${this.sdfVarName});`;
