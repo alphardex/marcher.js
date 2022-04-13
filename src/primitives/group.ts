@@ -2,17 +2,17 @@ import { joinLine } from "../utils";
 import { PrimitiveSDF, SDFConfig } from "./primitive";
 
 export interface GroupSDFConfig extends SDFConfig {
-  name: string;
+  mapFuncName: string;
   primitives: PrimitiveSDF[];
 }
 
 class GroupSDF extends PrimitiveSDF {
-  name: string;
+  mapFuncName: string;
   primitives: PrimitiveSDF[];
   constructor(config: Partial<GroupSDFConfig> = {}) {
     super(config);
-    const { name = "g1" } = config;
-    this.name = name;
+    const { mapFuncName = "g1" } = config;
+    this.mapFuncName = mapFuncName;
     this.primitives = [];
   }
   addPrimitive(sdf: PrimitiveSDF) {
@@ -21,9 +21,9 @@ class GroupSDF extends PrimitiveSDF {
   get primitivesShader() {
     return joinLine(this.primitives.map((item) => item.totalShader));
   }
-  get functionShader() {
+  get mapFuncShader() {
     return `
-    vec2 ${this.name}(in vec3 pos)
+    vec2 ${this.mapFuncName}(in vec3 pos)
     {
         vec2 res=vec2(1e10,0.);
         
@@ -36,7 +36,7 @@ class GroupSDF extends PrimitiveSDF {
     `;
   }
   get shader() {
-    return `vec2 ${this.sdfVarName}=${this.name}(${this.pointVarName});`;
+    return `vec2 ${this.sdfVarName}=${this.mapFuncName}(${this.pointVarName});`;
   }
   get addExisting() {
     return `res=opUnion(res,${this.sdfVarName});`;

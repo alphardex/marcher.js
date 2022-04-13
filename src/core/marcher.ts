@@ -669,7 +669,7 @@ class Marcher {
     return this.mainImage?.shader || defaultShaderMainImage;
   }
   get shaderGroupFunctions() {
-    return joinLine(this.groups.map((item) => item.functionShader));
+    return joinLine(this.groups.map((item) => item.mapFuncShader));
   }
   get fragmentShader() {
     return `
