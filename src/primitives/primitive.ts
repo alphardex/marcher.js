@@ -77,12 +77,30 @@ class PrimitiveSDF {
       )});`
     );
   }
+  translateX(value = 0) {
+    this.translate(value, 0, 0);
+  }
+  translateY(value = 0) {
+    this.translate(0, value, 0);
+  }
+  translateZ(value = 0) {
+    this.translate(0, 0, value);
+  }
   rotate(deg = 0, axis = "x") {
     this.transforms.push(
       `${this.pointVarName}=rotate${axis.toUpperCase()}(${
         this.pointVarName
       },${toFixed2(deg2rad(deg))});`
     );
+  }
+  rotateX(deg = 0) {
+    this.rotate(deg, "x");
+  }
+  rotateY(deg = 0) {
+    this.rotate(deg, "y");
+  }
+  rotateZ(deg = 0) {
+    this.rotate(deg, "z");
   }
   scale(value = 1) {
     this.scaleValue = value;
@@ -161,12 +179,30 @@ class PrimitiveSDF {
       `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
     );
   }
-  elongate(x = 0, y = 0, z = 0) {
+  symX() {
+    this.sym("x");
+  }
+  symY() {
+    this.sym("y");
+  }
+  symZ() {
+    this.sym("z");
+  }
+  elongate(x = 0.1, y = 0.1, z = 0.1) {
     this.operationsBefore.push(
       `${this.pointVarName}=opElongate(${this.pointVarName},vec3(${toFixed2(
         x
       )},${toFixed2(y)},${toFixed2(z)})).xyz;`
     );
+  }
+  elongateX(value = 0.1) {
+    this.elongate(value, 0, 0);
+  }
+  elongateY(value = 0.1) {
+    this.elongate(0, value, 0);
+  }
+  elongateZ(value = 0.1) {
+    this.elongate(0, 0, value);
   }
   onion(value = 0.03) {
     this.operationsAfter.push(
