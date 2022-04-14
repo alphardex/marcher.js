@@ -156,58 +156,23 @@ class PrimitiveSDF {
       )});`
     );
   }
-  // Methods TODO
-  // sym(axis = "x") {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
-  //   );
-  // }
-  // elongate(x = 0, y = 0, z = 0) {
-  //   this.operationsAfter.push(
-  //     `${this.sdfVarName}=opElongate(${this.sdfVarName},vec3(${toFixed2(
-  //       x
-  //     )},${toFixed2(y)},${toFixed2(z)}));`
-  //   );
-  // }
-  // onion(value = 0.1) {
-  //   this.operationsAfter.push(
-  //     `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
-  //   );
-  // }
-  // extrude(value = 0.1) {
-  //   this.operationsAfter.push(
-  //     `${this.sdfVarName}=opExtrusion(${this.pointVarName},${
-  //       this.sdfVarName
-  //     },${toFixed2(value)});`
-  //   );
-  // }
-  // revolve(value = 0.1) {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=opRevolution(${this.pointVarName},${toFixed2(
-  //       value
-  //     )});`
-  //   );
-  // }
-  // length2() {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=length2(${this.pointVarName});`
-  //   );
-  // }
-  // length4() {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=length4(${this.pointVarName});`
-  //   );
-  // }
-  // length6() {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=length6(${this.pointVarName});`
-  //   );
-  // }
-  // length8() {
-  //   this.operationsBefore.push(
-  //     `${this.pointVarName}=length8(${this.pointVarName});`
-  //   );
-  // }
+  sym(axis = "x") {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
+    );
+  }
+  elongate(x = 0, y = 0, z = 0) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opElongate(${this.pointVarName},vec3(${toFixed2(
+        x
+      )},${toFixed2(y)},${toFixed2(z)})).xyz;`
+    );
+  }
+  onion(value = 0.03) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
+    );
+  }
 }
 
 export { PrimitiveSDF };
