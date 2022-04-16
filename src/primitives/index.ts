@@ -1,3 +1,4 @@
+export * from "./bezier";
 export * from "./box";
 export * from "./cylinder";
 export * from "./group";
