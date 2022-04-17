@@ -66,9 +66,11 @@ class PrimitiveSDF {
   }
   show() {
     this.isVisible = true;
+    return this;
   }
   hide() {
     this.isVisible = false;
+    return this;
   }
   translate(x = 0, y = 0, z = 0) {
     this.transforms.push(
@@ -76,15 +78,19 @@ class PrimitiveSDF {
         z
       )});`
     );
+    return this;
   }
   translateX(value = 0) {
     this.translate(value, 0, 0);
+    return this;
   }
   translateY(value = 0) {
     this.translate(0, value, 0);
+    return this;
   }
   translateZ(value = 0) {
     this.translate(0, 0, value);
+    return this;
   }
   rotate(deg = 0, axis = "x") {
     this.transforms.push(
@@ -92,38 +98,50 @@ class PrimitiveSDF {
         this.pointVarName
       },${toFixed2(deg2rad(deg))});`
     );
+    return this;
   }
   rotateX(deg = 0) {
     this.rotate(deg, "x");
+    return this;
   }
   rotateY(deg = 0) {
     this.rotate(deg, "y");
+    return this;
   }
   rotateZ(deg = 0) {
     this.rotate(deg, "z");
+    return this;
   }
   scale(value = 1) {
     this.scaleValue = value;
+    return this;
   }
   round(value = 0.1) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opRound(${this.sdfVarName},${toFixed2(value)});`
     );
+    return this;
   }
   union(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opUnion(${this.sdfVarName},${sdf.sdfVarName});`
     );
+    sdf.hide();
+    return this;
   }
   intersect(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opIntersection(${this.sdfVarName},${sdf.sdfVarName});`
     );
+    sdf.hide();
+    return this;
   }
   subtract(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opSubtraction(${this.sdfVarName},${sdf.sdfVarName});`
     );
+    sdf.hide();
+    return this;
   }
   smoothUnion(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
@@ -131,6 +149,8 @@ class PrimitiveSDF {
         sdf.sdfVarName
       },${toFixed2(value)});`
     );
+    sdf.hide();
+    return this;
   }
   smoothIntersect(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
@@ -138,6 +158,8 @@ class PrimitiveSDF {
         sdf.sdfVarName
       },${toFixed2(value)});`
     );
+    sdf.hide();
+    return this;
   }
   smoothSubtract(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
@@ -145,6 +167,8 @@ class PrimitiveSDF {
         sdf.sdfVarName
       },${toFixed2(value)});`
     );
+    sdf.hide();
+    return this;
   }
   rep(x = 3, y = 3, z = 3) {
     this.operationsBefore.push(
@@ -152,6 +176,7 @@ class PrimitiveSDF {
         x
       )},${toFixed2(y)},${toFixed2(z)}));`
     );
+    return this;
   }
   repLim(s = 2, x1 = 0, y1 = 0, z1 = 0, x2 = 1, y2 = 1, z2 = 1) {
     this.operationsBefore.push(
@@ -161,11 +186,13 @@ class PrimitiveSDF {
         x2
       )},${toFixed2(y2)},${toFixed2(z2)}));`
     );
+    return this;
   }
   twist(value = 3) {
     this.operationsBefore.push(
       `${this.pointVarName}=opTwist(${this.pointVarName},${toFixed2(value)});`
     );
+    return this;
   }
   cheapBend(value = 1) {
     this.operationsBefore.push(
@@ -173,20 +200,25 @@ class PrimitiveSDF {
         value
       )});`
     );
+    return this;
   }
   sym(axis = "x") {
     this.operationsBefore.push(
       `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
     );
+    return this;
   }
   symX() {
     this.sym("x");
+    return this;
   }
   symY() {
     this.sym("y");
+    return this;
   }
   symZ() {
     this.sym("z");
+    return this;
   }
   elongate(x = 0.1, y = 0.1, z = 0.1) {
     this.operationsBefore.push(
@@ -194,20 +226,25 @@ class PrimitiveSDF {
         x
       )},${toFixed2(y)},${toFixed2(z)})).xyz;`
     );
+    return this;
   }
   elongateX(value = 0.1) {
     this.elongate(value, 0, 0);
+    return this;
   }
   elongateY(value = 0.1) {
     this.elongate(0, value, 0);
+    return this;
   }
   elongateZ(value = 0.1) {
     this.elongate(0, 0, value);
+    return this;
   }
   onion(value = 0.03) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
     );
+    return this;
   }
 }
 
