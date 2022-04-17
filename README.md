@@ -48,10 +48,10 @@ const map = new marcher.SDFMapFunction();
   const box = new marcher.BoxSDF({
     sdfVarName: "d1",
   });
-  // make round corners for box SDF
-  box.round(0.1);
   // add box SDF to the layer
   layer.addPrimitive(box);
+  // make round corners for box SDF
+  box.round(0.1);
 
   // add layer to the map function
   map.addLayer(layer);
