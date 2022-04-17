@@ -5,6 +5,7 @@ class SDFRender {
   }
   setSkyBox(str: string) {
     this.skybox = str;
+    return this;
   }
   get shader() {
     return `

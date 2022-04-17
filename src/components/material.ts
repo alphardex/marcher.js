@@ -13,10 +13,12 @@ class SDFMaterial {
         ${str}
     }
       `);
+    return this;
   }
   addColorMaterial(id = DEFAULT_MATERIAL_ID, r = 255, g = 255, b = 255) {
     const str = `col=vec3(${toFixed1(r)},${toFixed1(g)},${toFixed1(b)})/255.;`;
     this.addMaterial(id, str);
+    return this;
   }
   get shader() {
     return `

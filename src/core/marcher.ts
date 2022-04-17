@@ -677,21 +677,27 @@ class Marcher {
   }
   setUtilFunction(str: string) {
     this.utilFunction = str;
+    return this;
   }
   setMapFunction(mapFunction: SDFMapFunction) {
     this.mapFunction = mapFunction;
+    return this;
   }
   setMaterial(material: SDFMaterial) {
     this.material = material;
+    return this;
   }
   setLighting(lighting: string) {
     this.lighting = lighting;
+    return this;
   }
   setGetSceneColor(getSceneColor: string) {
     this.getSceneColor = getSceneColor;
+    return this;
   }
   addGroup(group: GroupSDF) {
     this.groups.push(group);
+    return this;
   }
   get shaderSDFUtils() {
     return defaultShaderSDFUtils;

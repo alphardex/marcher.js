@@ -5,6 +5,7 @@ class SDFMainImage {
   }
   setAntialias(value = true) {
     this.antialias = value;
+    return this;
   }
   get shader() {
     return `

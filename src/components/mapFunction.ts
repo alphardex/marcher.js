@@ -8,6 +8,7 @@ class SDFMapFunction {
   }
   addLayer(layer: SDFLayer) {
     this.layers.push(layer);
+    return this;
   }
   get shader() {
     return `

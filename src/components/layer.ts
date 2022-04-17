@@ -12,12 +12,15 @@ class SDFLayer {
   }
   addPrimitive(primitive: PrimitiveSDF) {
     this.primitives.push(primitive);
+    return this;
   }
   prependCustomCode(customCode: string) {
     this.customCodesBefore.push(customCode);
+    return this;
   }
   appendCustomCode(customCode: string) {
     this.customCodesAfter.push(customCode);
+    return this;
   }
   get primitivesShader() {
     return joinLine(this.primitives.map((item) => item.totalShader));
