@@ -1,4 +1,4 @@
-import { joinLine } from "../utils";
+import { joinLine, toFixed2 } from "../utils";
 import { PrimitiveSDF, SDFConfig } from "./primitive";
 
 export interface GroupSDFConfig extends SDFConfig {
@@ -36,7 +36,9 @@ class GroupSDF extends PrimitiveSDF {
     `;
   }
   get shader() {
-    return `vec2 ${this.sdfVarName}=${this.mapFuncName}(${this.pointVarName});`;
+    return `vec2 ${this.sdfVarName}=${this.mapFuncName}(${
+      this.pointVarName
+    }/${toFixed2(this.scaleValue)})*${toFixed2(this.scaleValue)};`;
   }
   get addExisting() {
     return `res=opUnion(res,${this.sdfVarName});`;
