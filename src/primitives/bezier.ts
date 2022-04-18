@@ -8,7 +8,9 @@ export interface BezierSDFConfig extends SDFConfig {
   y2: number;
   x3: number;
   y3: number;
-  h: number;
+  xMax: number;
+  yMax: number;
+  zMax: number;
 }
 
 class BezierSDF extends PrimitiveSDF {
@@ -18,17 +20,21 @@ class BezierSDF extends PrimitiveSDF {
   y2: number;
   x3: number;
   y3: number;
-  h: number;
+  xMax: number;
+  yMax: number;
+  zMax: number;
   constructor(config: Partial<BezierSDFConfig> = {}) {
     super(config);
     const {
-      x1 = 1.3 * Math.cos(0),
-      y1 = 0.9 * Math.cos(5),
-      x2 = 1.3 * Math.cos(3),
-      y2 = 0.9 * Math.cos(4),
-      x3 = 1.3 * Math.cos(2),
-      y3 = 0.9 * Math.cos(0),
-      h = 0.1,
+      x1 = 0,
+      y1 = 0,
+      x2 = 0,
+      y2 = 0.8,
+      x3 = 0.6,
+      y3 = 0.0,
+      xMax = 1.3,
+      yMax = 0.9,
+      zMax = 0.1,
     } = config;
     this.x1 = x1;
     this.y1 = y1;
@@ -36,7 +42,9 @@ class BezierSDF extends PrimitiveSDF {
     this.y2 = y2;
     this.x3 = x3;
     this.y3 = y3;
-    this.h = h;
+    this.xMax = xMax;
+    this.yMax = yMax;
+    this.zMax = zMax;
   }
   get shader() {
     return `float ${this.sdfVarName}=sdBezier3D(${this.pointVarName}/${toFixed2(
@@ -45,7 +53,9 @@ class BezierSDF extends PrimitiveSDF {
       this.x2
     )},${toFixed2(this.y2)}),vec2(${toFixed2(this.x3)},${toFixed2(
       this.y3
-    )}),${toFixed2(this.h)})*${toFixed2(this.scaleValue)};`;
+    )}),${toFixed2(this.xMax)},${toFixed2(this.yMax)},${toFixed2(
+      this.zMax
+    )})*${toFixed2(this.scaleValue)};`;
   }
 }
 

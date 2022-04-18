@@ -138,6 +138,15 @@ float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float h)
     return opExtrusion_0(pos,sdBezier(pos.xy,A,B,C),h);
 }
 
+float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float xMax,in float yMax,in float zMax)
+{
+    vec2 xyMax=vec2(xMax,yMax);
+    vec2 v0=xyMax*cos(A*PI);
+    vec2 v1=xyMax*cos(B*PI);
+    vec2 v2=xyMax*cos(C*PI);
+    return sdBezier3D(pos,v0,v1,v2,zMax);
+}
+
 // sdf ops
 vec4 opElongate(in vec3 p,in vec3 h)
 {
@@ -342,8 +351,19 @@ vec3 getRayDirection(vec2 p,vec3 ro,vec3 ta,float fl){
 // lighting
 // https://learnopengl.com/Lighting/Basic-Lighting
 
+float saturate_0(float a){
+    return clamp(a,0.,1.);
+}
+
+// https://learnopengl.com/Lighting/Basic-Lighting
+
 float saturate_2(float a){
     return clamp(a,0.,1.);
+}
+
+float diffuse(vec3 n,vec3 l){
+    float diff=saturate_2(dot(n,l));
+    return diff;
 }
 
 // https://learnopengl.com/Lighting/Basic-Lighting
@@ -352,19 +372,8 @@ float saturate_1(float a){
     return clamp(a,0.,1.);
 }
 
-float diffuse(vec3 n,vec3 l){
-    float diff=saturate_1(dot(n,l));
-    return diff;
-}
-
-// https://learnopengl.com/Lighting/Basic-Lighting
-
-float saturate_0(float a){
-    return clamp(a,0.,1.);
-}
-
 float specular(vec3 n,vec3 l,float shininess){
-    float spec=pow(saturate_0(dot(n,l)),shininess);
+    float spec=pow(saturate_1(dot(n,l)),shininess);
     return spec;
 }
 
