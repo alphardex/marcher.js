@@ -70,7 +70,7 @@ console.log(mar.fragmentShader);
 
 ## Features
 
-- Write raymarching code with JavaScript (GLSL for customization :d)
+- Write raymarching code in JavaScript (GLSL for customization :d)
 - Zero dependency
 - Fully typed
 - Shadertoy support
