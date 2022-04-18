@@ -11,7 +11,7 @@
   </a>
 </p>
 
-> A raymarching shader generator.
+> A library for writing raymarching code in JavaScript.
 
 ![ma](./assets/previews/poke-ball.gif)
 
