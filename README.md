@@ -13,6 +13,8 @@
 
 > A raymarching shader generator.
 
+![ma](./assets/previews/poke-ball.gif)
+
 ## Install
 
 ```sh
@@ -66,23 +68,54 @@ mar.setMapFunction(map);
 console.log(mar.fragmentShader);
 ```
 
+## Features
+
+- Write raymarching code with JavaScript (GLSL for customization :d)
+- Zero dependency
+- Fully typed
+- Shadertoy support
+
 ## Previews
 
 ### Basic Scene
 
-![1](./assets/previews/1.png)
+![ma](./assets/previews/basic.png)
 
-### Primitives
+Demo: https://codesandbox.io/s/basic-uxqbgh?file=/src/app.ts
 
-![1](./assets/previews/2.png)
+### Primitive
+
+![ma](./assets/previews/primitive.png)
+
+Demo: https://codesandbox.io/s/primitive-zcuy2q?file=/src/app.ts
 
 ### Boolean
 
-![1](./assets/previews/3.png)
+![ma](./assets/previews/boolean.png)
 
-### Pokeball
+Demo: https://codesandbox.io/s/boolean-13qfo4?file=/src/app.ts
 
-![1](./assets/previews/4.gif)
+### Bezier
+
+![ma](./assets/previews/bezier.gif)
+
+Demo: https://codesandbox.io/s/bezier-syd12e?file=/src/app.ts
+
+### CSG
+
+![ma](./assets/previews/csg.png)
+
+Demo: https://codesandbox.io/s/csg-kmuzzi?file=/src/app.ts
+
+### Poke Ball
+
+![ma](./assets/previews/poke-ball.gif)
+
+Demo: https://codesandbox.io/s/poke-ball-j7bwy7?file=/src/app.ts
+
+## API
+
+Just TypeScript and you get it :)
 
 ## Author
 
