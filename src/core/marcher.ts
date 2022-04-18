@@ -127,7 +127,7 @@ float sdBezier(in vec2 pos,in vec2 A,in vec2 B,in vec2 C)
     return sqrt(res);
 }
 
-float opExtrusion_0(in vec3 p,in float sdf,in float h)
+float opExtrusion_1(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -135,7 +135,7 @@ float opExtrusion_0(in vec3 p,in float sdf,in float h)
 
 float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float h)
 {
-    return opExtrusion_0(pos,sdBezier(pos.xy,A,B,C),h);
+    return opExtrusion_1(pos,sdBezier(pos.xy,A,B,C),h);
 }
 
 const float PI=3.14159265359;
@@ -166,7 +166,7 @@ float opOnion(in float d,in float h)
     return abs(d)-h;
 }
 
-float opExtrusion_1(in vec3 p,in float sdf,in float h)
+float opExtrusion_0(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -327,6 +327,18 @@ vec3 opCheapBend(vec3 p,float k)
     return q;
 }
 
+float opHalfX(float sdf,vec3 pos){
+    return max(sdf,pos.x);
+}
+
+float opHalfY(float sdf,vec3 pos){
+    return max(sdf,pos.y);
+}
+
+float opHalfZ(float sdf,vec3 pos){
+    return max(sdf,pos.z);
+}
+
 // ray
 vec2 normalizeScreenCoords(vec2 screenCoord,vec2 resolution)
 {
@@ -353,7 +365,7 @@ vec3 getRayDirection(vec2 p,vec3 ro,vec3 ta,float fl){
 // lighting
 // https://learnopengl.com/Lighting/Basic-Lighting
 
-float saturate_0(float a){
+float saturate_2(float a){
     return clamp(a,0.,1.);
 }
 
@@ -370,12 +382,12 @@ float diffuse(vec3 n,vec3 l){
 
 // https://learnopengl.com/Lighting/Basic-Lighting
 
-float saturate_2(float a){
+float saturate_0(float a){
     return clamp(a,0.,1.);
 }
 
 float specular(vec3 n,vec3 l,float shininess){
-    float spec=pow(saturate_2(dot(n,l)),shininess);
+    float spec=pow(saturate_0(dot(n,l)),shininess);
     return spec;
 }
 

@@ -246,6 +246,26 @@ class PrimitiveSDF {
     );
     return this;
   }
+  half(axis = "x") {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opHalf${axis.toUpperCase()}(${this.sdfVarName},${
+        this.pointVarName
+      });`
+    );
+    return this;
+  }
+  halfX() {
+    this.half("x");
+    return this;
+  }
+  halfY() {
+    this.half("y");
+    return this;
+  }
+  halfZ() {
+    this.half("z");
+    return this;
+  }
 }
 
 export { PrimitiveSDF };
