@@ -7,3 +7,4 @@ export * from "./polygon";
 export * from "./primitive";
 export * from "./sphere";
 export * from "./triangle";
+export * from "./uberprim";

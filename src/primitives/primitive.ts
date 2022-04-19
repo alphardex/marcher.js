@@ -124,29 +124,29 @@ class PrimitiveSDF {
   }
   union(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opUnion(${this.sdfVarName},${sdf.sdfVarName});`
+      `${this.sdfVarName}=opUnion(${sdf.sdfVarName},${this.sdfVarName});`
     );
     sdf.hide();
     return this;
   }
   intersect(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opIntersection(${this.sdfVarName},${sdf.sdfVarName});`
+      `${this.sdfVarName}=opIntersection(${sdf.sdfVarName},${this.sdfVarName});`
     );
     sdf.hide();
     return this;
   }
   subtract(sdf: PrimitiveSDF) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opSubtraction(${this.sdfVarName},${sdf.sdfVarName});`
+      `${this.sdfVarName}=opSubtraction(${sdf.sdfVarName},${this.sdfVarName});`
     );
     sdf.hide();
     return this;
   }
   smoothUnion(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opSmoothUnion(${this.sdfVarName},${
-        sdf.sdfVarName
+      `${this.sdfVarName}=opSmoothUnion(${sdf.sdfVarName},${
+        this.sdfVarName
       },${toFixed2(value)});`
     );
     sdf.hide();
@@ -154,8 +154,8 @@ class PrimitiveSDF {
   }
   smoothIntersect(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opSmoothIntersection(${this.sdfVarName},${
-        sdf.sdfVarName
+      `${this.sdfVarName}=opSmoothIntersection(${sdf.sdfVarName},${
+        this.sdfVarName
       },${toFixed2(value)});`
     );
     sdf.hide();
@@ -163,8 +163,8 @@ class PrimitiveSDF {
   }
   smoothSubtract(sdf: PrimitiveSDF, value = 0.1) {
     this.operationsAfter.push(
-      `${this.sdfVarName}=opSmoothSubtraction(${this.sdfVarName},${
-        sdf.sdfVarName
+      `${this.sdfVarName}=opSmoothSubtraction(${sdf.sdfVarName},${
+        this.sdfVarName
       },${toFixed2(value)});`
     );
     sdf.hide();

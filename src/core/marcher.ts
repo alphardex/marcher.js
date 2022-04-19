@@ -127,7 +127,7 @@ float sdBezier(in vec2 pos,in vec2 A,in vec2 B,in vec2 C)
     return sqrt(res);
 }
 
-float opExtrusion_1(in vec3 p,in float sdf,in float h)
+float opExtrusion_0(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -135,7 +135,7 @@ float opExtrusion_1(in vec3 p,in float sdf,in float h)
 
 float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float h)
 {
-    return opExtrusion_1(pos,sdBezier(pos.xy,A,B,C),h);
+    return opExtrusion_0(pos,sdBezier(pos.xy,A,B,C),h);
 }
 
 const float PI=3.14159265359;
@@ -147,6 +147,32 @@ float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float xMax,in floa
     vec2 v1=xyMax*cos(B*PI);
     vec2 v2=xyMax*cos(C*PI);
     return sdBezier3D(pos,v0,v1,v2,zMax);
+}
+
+// Credit: https://www.shadertoy.com/view/MsVGWG
+float sdUnterprim(vec3 p,vec4 s,vec3 r,vec2 ba,float sz2){
+    vec3 d=abs(p)-s.xyz;
+    float q=length(max(d.xy,0.))+min(0.,max(d.x,d.y))-r.x;
+    // hole support
+    q=abs(q)-s.w;
+    
+    vec2 pa=vec2(q,p.z-s.z);
+    vec2 diag=pa-vec2(r.z,sz2)*clamp(dot(pa,ba),0.,1.);
+    vec2 h0=vec2(max(q-r.z,0.),p.z+s.z);
+    vec2 h1=vec2(max(q,0.),p.z-s.z);
+    
+    return sqrt(min(dot(diag,diag),min(dot(h0,h0),dot(h1,h1))))
+    *sign(max(dot(pa,vec2(-ba.y,ba.x)),d.z))-r.y;
+}
+
+float sdUberprim(vec3 p,vec4 s,vec3 r){
+    // these operations can be precomputed
+    s.xy-=r.x;
+    r.x-=s.w;
+    s.w-=r.y;
+    s.z-=r.y;
+    vec2 ba=vec2(r.z,-2.*s.z);
+    return sdUnterprim(p,s,r,ba/dot(ba,ba),ba.y);
 }
 
 // sdf ops
@@ -166,7 +192,7 @@ float opOnion(in float d,in float h)
     return abs(d)-h;
 }
 
-float opExtrusion_0(in vec3 p,in float sdf,in float h)
+float opExtrusion_1(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
