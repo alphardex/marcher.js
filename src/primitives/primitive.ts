@@ -14,6 +14,7 @@ class PrimitiveSDF {
   isVisible: boolean;
   operationsBefore: string[];
   operationsAfter: string[];
+  operationsHalf: string[];
   transforms: string[];
   scaleValue: number;
   constructor(config: Partial<SDFConfig> = {}) {
@@ -28,6 +29,7 @@ class PrimitiveSDF {
     this.isVisible = isVisible;
     this.operationsBefore = [];
     this.operationsAfter = [];
+    this.operationsHalf = [];
     this.transforms = [];
     this.scaleValue = scale;
   }
@@ -52,6 +54,9 @@ class PrimitiveSDF {
   get operationsAfterShader() {
     return joinLine(this.operationsAfter);
   }
+  get operationsHalfShader() {
+    return joinLine(this.operationsHalf);
+  }
   get totalShader() {
     return joinLine(
       compact([
@@ -60,9 +65,19 @@ class PrimitiveSDF {
         this.operationsBeforeShader,
         this.shader,
         this.operationsAfterShader,
+        this.operationsHalfShader,
         this.isVisible ? this.addExisting : "",
       ])
     );
+  }
+  removeOperation(name: string) {
+    this.operationsBefore = this.operationsBefore.filter(
+      (e) => !e.includes(name)
+    );
+    this.operationsAfter = this.operationsAfter.filter(
+      (e) => !e.includes(name)
+    );
+    this.operationsHalf = this.operationsHalf.filter((e) => !e.includes(name));
   }
   show() {
     this.isVisible = true;
@@ -247,7 +262,7 @@ class PrimitiveSDF {
     return this;
   }
   half(axis = "x") {
-    this.operationsAfter.push(
+    this.operationsHalf.push(
       `${this.sdfVarName}=opHalf${axis.toUpperCase()}(${this.sdfVarName},${
         this.pointVarName
       });`
