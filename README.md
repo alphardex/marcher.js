@@ -101,6 +101,12 @@ Demo: https://codesandbox.io/s/boolean-13qfo4?file=/src/app.ts
 
 Demo: https://codesandbox.io/s/bezier-syd12e?file=/src/app.ts
 
+### Uberprim
+
+![ma](./assets/previews/uberprim.gif)
+
+Demo: https://codesandbox.io/s/uberprim-wtj8y0?file=/src/app.ts
+
 ### CSG
 
 ![ma](./assets/previews/csg.png)
