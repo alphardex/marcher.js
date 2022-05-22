@@ -127,7 +127,7 @@ float sdBezier(in vec2 pos,in vec2 A,in vec2 B,in vec2 C)
     return sqrt(res);
 }
 
-float opExtrusion_0(in vec3 p,in float sdf,in float h)
+float opExtrusion_1(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -135,7 +135,7 @@ float opExtrusion_0(in vec3 p,in float sdf,in float h)
 
 float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float h)
 {
-    return opExtrusion_0(pos,sdBezier(pos.xy,A,B,C),h);
+    return opExtrusion_1(pos,sdBezier(pos.xy,A,B,C),h);
 }
 
 const float PI=3.14159265359;
@@ -175,6 +175,32 @@ float sdUberprim(vec3 p,vec4 s,vec3 r){
     return sdUnterprim(p,s,r,ba/dot(ba,ba),ba.y);
 }
 
+float sdStar(in vec2 p,in float r,in int n,in float m)
+{
+    // next 4 lines can be precomputed for a given shape
+    float an=3.141593/float(n);
+    float en=3.141593/m;// m is between 2 and n
+    vec2 acs=vec2(cos(an),sin(an));
+    vec2 ecs=vec2(cos(en),sin(en));// ecs=vec2(0,1) for regular polygon
+    
+    float bn=mod(atan(p.x,p.y),2.*an)-an;
+    p=length(p)*vec2(cos(bn),abs(sin(bn)));
+    p-=r*acs;
+    p+=ecs*clamp(-dot(p,ecs),0.,r*acs.y/ecs.y);
+    return length(p)*sign(p.x);
+}
+
+float opExtrusion_0(in vec3 p,in float sdf,in float h)
+{
+    vec2 w=vec2(sdf,abs(p.z)-h);
+    return min(max(w.x,w.y),0.)+length(max(w,0.));
+}
+
+float sdStar3D(in vec3 pos,in float r,in int n,in float m,in float h)
+{
+    return opExtrusion_0(pos,sdStar(pos.xy,r,n,m),h);
+}
+
 // sdf ops
 vec4 opElongate(in vec3 p,in vec3 h)
 {
@@ -192,7 +218,7 @@ float opOnion(in float d,in float h)
     return abs(d)-h;
 }
 
-float opExtrusion_1(in vec3 p,in float sdf,in float h)
+float opExtrusion_2(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -391,19 +417,8 @@ vec3 getRayDirection(vec2 p,vec3 ro,vec3 ta,float fl){
 // lighting
 // https://learnopengl.com/Lighting/Basic-Lighting
 
-float saturate_2(float a){
-    return clamp(a,0.,1.);
-}
-
-// https://learnopengl.com/Lighting/Basic-Lighting
-
 float saturate_1(float a){
     return clamp(a,0.,1.);
-}
-
-float diffuse(vec3 n,vec3 l){
-    float diff=saturate_1(dot(n,l));
-    return diff;
 }
 
 // https://learnopengl.com/Lighting/Basic-Lighting
@@ -412,8 +427,19 @@ float saturate_0(float a){
     return clamp(a,0.,1.);
 }
 
+float diffuse(vec3 n,vec3 l){
+    float diff=saturate_0(dot(n,l));
+    return diff;
+}
+
+// https://learnopengl.com/Lighting/Basic-Lighting
+
+float saturate_2(float a){
+    return clamp(a,0.,1.);
+}
+
 float specular(vec3 n,vec3 l,float shininess){
-    float spec=pow(saturate_0(dot(n,l)),shininess);
+    float spec=pow(saturate_2(dot(n,l)),shininess);
     return spec;
 }
 

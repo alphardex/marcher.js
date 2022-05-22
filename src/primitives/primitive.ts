@@ -17,6 +17,7 @@ class PrimitiveSDF {
   operationsHalf: string[];
   transforms: string[];
   scaleValue: number;
+  pointVector: string;
   constructor(config: Partial<SDFConfig> = {}) {
     const {
       sdfVarName = "dt",
@@ -32,6 +33,7 @@ class PrimitiveSDF {
     this.operationsHalf = [];
     this.transforms = [];
     this.scaleValue = scale;
+    this.pointVector = "xyz";
   }
   get pointVarName() {
     return `${this.sdfVarName}p`;
@@ -40,7 +42,7 @@ class PrimitiveSDF {
     return ``;
   }
   get pointShader() {
-    return `vec3 ${this.pointVarName}=pos;`;
+    return `vec3 ${this.pointVarName}=pos.${this.pointVector};`;
   }
   get addExisting() {
     return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;

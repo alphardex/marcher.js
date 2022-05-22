@@ -37,6 +37,8 @@ class UberprimSDF extends PrimitiveSDF {
     this.xCornerRadius = xCornerRadius;
     this.yCornerRadius = yCornerRadius;
     this.zCornerRadius = zCornerRadius;
+
+    this.pointVector = "zxy";
   }
   get shader() {
     return `float ${this.sdfVarName}=sdUberprim(${this.pointVarName}/${toFixed2(
