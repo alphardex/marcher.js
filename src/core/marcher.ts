@@ -838,7 +838,6 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord){
 export interface MarcherConfig {
   antialias: boolean;
   skybox: string;
-  enableOrbitControls: boolean;
 }
 
 class Marcher {
