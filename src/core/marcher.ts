@@ -568,7 +568,7 @@ vec4 toGamma(vec4 v){
 // consts
 const float PI_2=3.14159265359;
 
-const float TWO_PI_1769563591=6.28318530718;
+const float TWO_PI_2666156403=6.28318530718;
 `;
 
 const defaultShaderMapFunction = `
