@@ -676,6 +676,75 @@ vec3 lighting(in vec3 col,in vec3 pos,in vec3 rd,in vec3 nor){
 }
 `;
 
+const shaderBeautifulLighting = `
+vec3 lighting(in vec3 col,in vec3 pos,in vec3 rd,in vec3 nor){
+    vec3 lin=vec3(0.);
+    
+    // reflection
+    vec3 ref=reflect(rd,nor);
+    
+    // ao
+    float occ=1.;
+    
+    // sun
+    {
+        // pos
+        vec3 lig=normalize(vec3(-.5,.4,-.6));
+        // dir
+        vec3 hal=normalize(lig-rd);
+        // diffuse
+        float dif=diffuse(nor,lig);
+        // softshadow
+        dif*=softshadow(pos,lig,.02,2.5);
+        // specular
+        float spe=specular(nor,hal,16.);
+        spe*=dif;
+        // fresnel
+        spe*=fresnel(.04,.96,5.,-lig,hal);
+        // apply
+        lin+=col*2.20*dif*vec3(1.30,1.,.70);
+        lin+=5.*spe;
+    }
+    // sky
+    {
+        // diffuse
+        float dif=sqrt(saturate_0(.5+.5*nor.y));
+        // ao
+        dif*=occ;
+        // specular
+        float spe=smoothstep(-.2,.2,ref.y);
+        spe*=dif;
+        // fresnel
+        spe*=fresnel(.04,.96,5.,rd,nor);
+        // softshadow
+        spe*=softshadow(pos,ref,.02,2.5);
+        // apply
+        lin+=col*.60*dif;
+        lin+=2.*spe;
+    }
+    // back
+    {
+        // diff
+        float dif=diffuse(nor,normalize(vec3(.5,0.,.6)))*saturate_0(1.-pos.y);
+        // ao
+        dif*=occ;
+        // apply
+        lin+=col*.55*dif;
+    }
+    // sss
+    {
+        // fresnel
+        float dif=fresnel(0.,1.,2.,rd,nor);
+        // ao
+        dif*=occ;
+        // apply
+        lin+=col*.25*dif;
+    }
+    
+    return lin;
+}
+`;
+
 const defaultShaderRender = `
 vec3 render(in vec3 ro,in vec3 rd){
     // skybox
@@ -722,7 +791,7 @@ vec3 getSceneColor(vec2 fragCoord){
 }
 `;
 
-const defaultShaderGetSceneColorWithOrbitControls = `
+const shaderGetSceneColorWithOrbitControls = `
 vec3 getSceneColor(vec2 fragCoord){
     vec2 p=normalizeScreenCoords(fragCoord,iResolution.xy);
     
@@ -781,7 +850,6 @@ class Marcher {
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
   groups: GroupSDF[];
-  enableOrbitControls: boolean;
   constructor(config: Partial<MarcherConfig> = {}) {
     this.utilFunction = "";
     this.mapFunction = null;
@@ -792,12 +860,7 @@ class Marcher {
     this.mainImage = new SDFMainImage();
     this.groups = [];
 
-    const {
-      antialias = false,
-      skybox = "vec3(10.,10.,10.)/255.",
-      enableOrbitControls = false,
-    } = config;
-    this.enableOrbitControls = enableOrbitControls;
+    const { antialias = false, skybox = "vec3(10.,10.,10.)/255." } = config;
 
     if (antialias) {
       this.mainImage.setAntialias(true);
@@ -830,6 +893,14 @@ class Marcher {
     this.groups.push(group);
     return this;
   }
+  enableOrbitControls() {
+    this.setGetSceneColor(shaderGetSceneColorWithOrbitControls);
+    return this;
+  }
+  enableBeautifulLighting() {
+    this.setLighting(shaderBeautifulLighting);
+    return this;
+  }
   get shaderSDFUtils() {
     return defaultShaderSDFUtils;
   }
@@ -852,9 +923,7 @@ class Marcher {
     return this.render?.shader || defaultShaderRender;
   }
   get shaderGetSceneColor() {
-    return this.getSceneColor || this.enableOrbitControls
-      ? defaultShaderGetSceneColorWithOrbitControls
-      : defaultShaderGetSceneColor;
+    return this.getSceneColor || defaultShaderGetSceneColor;
   }
   get shaderMainImage() {
     return this.mainImage?.shader || defaultShaderMainImage;
