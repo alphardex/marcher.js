@@ -47,38 +47,6 @@ float sdCylinder(vec3 p,vec3 a,vec3 b,float r)
     return sign(d)*sqrt(abs(d))/baba;
 }
 
-float sdHexPrism(vec3 p,vec2 h)
-{
-    const vec3 k=vec3(-.8660254,.5,.57735);
-    p=abs(p);
-    p.xy-=2.*min(dot(k.xy,p.xy),0.)*k.xy;
-    vec2 d=vec2(
-        length(p.xy-vec2(clamp(p.x,-k.z*h.x,k.z*h.x),h.x))*sign(p.y-h.x),
-    p.z-h.y);
-    return min(max(d.x,d.y),0.)+length(max(d,0.));
-}
-
-float sdOctogonPrism(in vec3 p,in float r,float h)
-{
-    const vec3 k=vec3(-.9238795325,// sqrt(2+sqrt(2))/2
-    .3826834323,// sqrt(2-sqrt(2))/2
-.4142135623);// sqrt(2)-1
-// reflections
-p=abs(p);
-p.xy-=2.*min(dot(vec2(k.x,k.y),p.xy),0.)*vec2(k.x,k.y);
-p.xy-=2.*min(dot(vec2(-k.x,k.y),p.xy),0.)*vec2(-k.x,k.y);
-// polygon side
-p.xy-=vec2(clamp(p.x,-k.z*r,k.z*r),r);
-vec2 d=vec2(length(p.xy)*sign(p.y),p.z-h);
-return min(max(d.x,d.y),0.)+length(max(d,0.));
-}
-
-float sdTriPrism(vec3 p,vec2 h)
-{
-    vec3 q=abs(p);
-    return max(q.z-h.y,max(q.x*.866025+p.y*.5,-p.y)-h.x*.5);
-}
-
 float sdCapsule(vec3 p,vec3 a,vec3 b,float r)
 {
     vec3 pa=p-a,ba=b-a;
@@ -127,7 +95,7 @@ float sdBezier(in vec2 pos,in vec2 A,in vec2 B,in vec2 C)
     return sqrt(res);
 }
 
-float opExtrusion_1(in vec3 p,in float sdf,in float h)
+float opExtrusion_2(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -135,17 +103,17 @@ float opExtrusion_1(in vec3 p,in float sdf,in float h)
 
 float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float h)
 {
-    return opExtrusion_1(pos,sdBezier(pos.xy,A,B,C),h);
+    return opExtrusion_2(pos,sdBezier(pos.xy,A,B,C),h);
 }
 
-const float PI=3.14159265359;
+const float PI_1=3.14159265359;
 
 float sdBezier3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float xMax,in float yMax,in float zMax)
 {
     vec2 xyMax=vec2(xMax,yMax);
-    vec2 v0=xyMax*cos(A*PI);
-    vec2 v1=xyMax*cos(B*PI);
-    vec2 v2=xyMax*cos(C*PI);
+    vec2 v0=xyMax*cos(A*PI_1);
+    vec2 v1=xyMax*cos(B*PI_1);
+    vec2 v2=xyMax*cos(C*PI_1);
     return sdBezier3D(pos,v0,v1,v2,zMax);
 }
 
@@ -190,7 +158,7 @@ float sdStar(in vec2 p,in float r,in int n,in float m)
     return length(p)*sign(p.x);
 }
 
-float opExtrusion_0(in vec3 p,in float sdf,in float h)
+float opExtrusion_1(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -198,7 +166,58 @@ float opExtrusion_0(in vec3 p,in float sdf,in float h)
 
 float sdStar3D(in vec3 pos,in float r,in int n,in float m,in float h)
 {
-    return opExtrusion_0(pos,sdStar(pos.xy,r,n,m),h);
+    return opExtrusion_1(pos,sdStar(pos.xy,r,n,m),h);
+}
+
+float sdTriangle(in vec2 p,in vec2 p0,in vec2 p1,in vec2 p2)
+{
+    vec2 e0=p1-p0;
+    vec2 e1=p2-p1;
+    vec2 e2=p0-p2;
+    
+    vec2 v0=p-p0;
+    vec2 v1=p-p1;
+    vec2 v2=p-p2;
+    
+    vec2 pq0=v0-e0*clamp(dot(v0,e0)/dot(e0,e0),0.,1.);
+    vec2 pq1=v1-e1*clamp(dot(v1,e1)/dot(e1,e1),0.,1.);
+    vec2 pq2=v2-e2*clamp(dot(v2,e2)/dot(e2,e2),0.,1.);
+    
+    float s=e0.x*e2.y-e0.y*e2.x;
+    vec2 d=min(min(vec2(dot(pq0,pq0),s*(v0.x*e0.y-v0.y*e0.x)),
+    vec2(dot(pq1,pq1),s*(v1.x*e1.y-v1.y*e1.x))),
+    vec2(dot(pq2,pq2),s*(v2.x*e2.y-v2.y*e2.x)));
+    
+    return-sqrt(d.x)*sign(d.y);
+}
+
+float opExtrusion_0(in vec3 p,in float sdf,in float h)
+{
+    vec2 w=vec2(sdf,abs(p.z)-h);
+    return min(max(w.x,w.y),0.)+length(max(w,0.));
+}
+
+float sdTriangle3D(in vec3 pos,in vec2 p0,in vec2 p1,in vec2 p2,in float h)
+{
+    return opExtrusion_0(pos,sdTriangle(pos.xy,p0,p1,p2),h);
+}
+
+const float PI_0=3.14159265359;
+
+float sdTriangle3D(in vec3 pos,in vec2 A,in vec2 B,in vec2 C,in float xMax,in float yMax,in float zMax)
+{
+    vec2 xyMax=vec2(xMax,yMax);
+    vec2 v0=xyMax*cos(A*PI_0);
+    vec2 v1=xyMax*cos(B*PI_0);
+    vec2 v2=xyMax*cos(C*PI_0);
+    return sdTriangle3D(pos,v0,v1,v2,zMax);
+}
+
+float sdGyroid(vec3 p,float scale,float thickness,float bias){
+    p*=scale;
+    float d=dot(sin(p),cos(p.zxy));
+    float g=abs(d-bias);
+    return g/scale-thickness;
 }
 
 // sdf ops
@@ -218,7 +237,7 @@ float opOnion(in float d,in float h)
     return abs(d)-h;
 }
 
-float opExtrusion_2(in vec3 p,in float sdf,in float h)
+float opExtrusion_3(in vec3 p,in float sdf,in float h)
 {
     vec2 w=vec2(sdf,abs(p.z)-h);
     return min(max(w.x,w.y),0.)+length(max(w,0.));
@@ -417,7 +436,7 @@ vec3 getRayDirection(vec2 p,vec3 ro,vec3 ta,float fl){
 // lighting
 // https://learnopengl.com/Lighting/Basic-Lighting
 
-float saturate_1(float a){
+float saturate_2(float a){
     return clamp(a,0.,1.);
 }
 
@@ -434,12 +453,12 @@ float diffuse(vec3 n,vec3 l){
 
 // https://learnopengl.com/Lighting/Basic-Lighting
 
-float saturate_2(float a){
+float saturate_1(float a){
     return clamp(a,0.,1.);
 }
 
 float specular(vec3 n,vec3 l,float shininess){
-    float spec=pow(saturate_2(dot(n,l)),shininess);
+    float spec=pow(saturate_1(dot(n,l)),shininess);
     return spec;
 }
 
@@ -545,6 +564,11 @@ vec3 toGamma(vec3 v){
 vec4 toGamma(vec4 v){
     return vec4(toGamma(v.rgb),v.a);
 }
+
+// consts
+const float PI_2=3.14159265359;
+
+const float TWO_PI_1769563591=6.28318530718;
 `;
 
 const defaultShaderMapFunction = `
@@ -698,6 +722,30 @@ vec3 getSceneColor(vec2 fragCoord){
 }
 `;
 
+const defaultShaderGetSceneColorWithOrbitControls = `
+vec3 getSceneColor(vec2 fragCoord){
+    vec2 p=normalizeScreenCoords(fragCoord,iResolution.xy);
+    
+    vec3 ro=vec3(0.,4.,8.);
+    vec3 ta=vec3(0.,0.,0.);
+    const float fl=2.5;
+    
+    vec2 m=iMouse.xy/iResolution.xy;
+    ro.yz=rotate(ro.yz,-m.y*PI_1+1.);
+    ro.xz=rotate(ro.xz,-m.x*TWO_PI_2666156403);
+    
+    vec3 rd=getRayDirection(p,ro,ta,fl);
+    
+    // render
+    vec3 col=render(ro,rd);
+    
+    // gamma
+    col=toGamma(col);
+    
+    return col;
+}
+`;
+
 const defaultShaderMainImage = `
 void mainImage(out vec4 fragColor,in vec2 fragCoord){
     vec3 tot=vec3(0.);
@@ -721,6 +769,7 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord){
 export interface MarcherConfig {
   antialias: boolean;
   skybox: string;
+  enableOrbitControls: boolean;
 }
 
 class Marcher {
@@ -732,6 +781,7 @@ class Marcher {
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
   groups: GroupSDF[];
+  enableOrbitControls: boolean;
   constructor(config: Partial<MarcherConfig> = {}) {
     this.utilFunction = "";
     this.mapFunction = null;
@@ -742,7 +792,13 @@ class Marcher {
     this.mainImage = new SDFMainImage();
     this.groups = [];
 
-    const { antialias = false, skybox = "vec3(10.,10.,10.)/255." } = config;
+    const {
+      antialias = false,
+      skybox = "vec3(10.,10.,10.)/255.",
+      enableOrbitControls = false,
+    } = config;
+    this.enableOrbitControls = enableOrbitControls;
+
     if (antialias) {
       this.mainImage.setAntialias(true);
     }
@@ -796,7 +852,9 @@ class Marcher {
     return this.render?.shader || defaultShaderRender;
   }
   get shaderGetSceneColor() {
-    return this.getSceneColor || defaultShaderGetSceneColor;
+    return this.getSceneColor || this.enableOrbitControls
+      ? defaultShaderGetSceneColorWithOrbitControls
+      : defaultShaderGetSceneColor;
   }
   get shaderMainImage() {
     return this.mainImage?.shader || defaultShaderMainImage;

@@ -2,6 +2,7 @@ export * from "./bezier";
 export * from "./box";
 export * from "./cylinder";
 export * from "./group";
+export * from "./gyroid";
 export * from "./joint";
 export * from "./polygon";
 export * from "./primitive";
