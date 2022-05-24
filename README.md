@@ -113,7 +113,7 @@ Demo: https://codesandbox.io/s/bezier-syd12e?file=/src/app.ts
 
 Demo: https://codesandbox.io/s/uberprim-wtj8y0?file=/src/app.ts
 
-### Magica CSG
+### MagicaCSG
 
 ![ma](./assets/previews/magica-csg.gif)
 
