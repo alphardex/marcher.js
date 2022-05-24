@@ -75,7 +75,7 @@ console.log(mar.fragmentShader);
 - Fully typed
 - Shadertoy support
 
-## Previews
+## Essentials
 
 ### Basic
 
@@ -130,6 +130,8 @@ Demo: https://codesandbox.io/s/magicacsg-g8ls17?file=/src/app.ts
 ![ma](./assets/previews/gyroid.gif)
 
 Demo: https://codesandbox.io/s/gyroid-i36q79?file=/src/app.ts
+
+## Examples
 
 ### CSG
 
