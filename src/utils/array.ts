@@ -1,3 +1,5 @@
 const compact = (arr: any[]) => arr.filter((item) => item);
 
-export { compact };
+const reverse = (arr: any[]) => [...arr].reverse();
+
+export { compact, reverse };

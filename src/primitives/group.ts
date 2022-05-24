@@ -1,4 +1,4 @@
-import { joinLine, toFixed2 } from "../utils";
+import { joinLine, reverse, toFixed2 } from "../utils";
 import { PrimitiveSDF, SDFConfig } from "./primitive";
 
 export interface GroupSDFConfig extends SDFConfig {
@@ -18,8 +18,14 @@ class GroupSDF extends PrimitiveSDF {
   addPrimitive(sdf: PrimitiveSDF) {
     this.primitives.push(sdf);
   }
+  get primitivesShaderArray() {
+    return this.primitives.map((item) => item.totalShader);
+  }
   get primitivesShader() {
-    return joinLine(this.primitives.map((item) => item.totalShader));
+    return joinLine(this.primitivesShaderArray);
+  }
+  get primitivesShaderReverse() {
+    return joinLine(reverse(this.primitivesShaderArray));
   }
   get mapFuncShader() {
     return `
@@ -28,7 +34,7 @@ class GroupSDF extends PrimitiveSDF {
         vec2 res=vec2(1e10,0.);
         
         {
-            ${this.primitivesShader}
+            ${this.primitivesShaderReverse}
         }
         
         return res;

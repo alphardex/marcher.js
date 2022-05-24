@@ -845,6 +845,8 @@ class Marcher {
   mapFunction: SDFMapFunction | null;
   material: SDFMaterial | null;
   lighting: string | null;
+  raycast: string | null;
+  calcNormal: string | null;
   render: SDFRender;
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
@@ -854,6 +856,8 @@ class Marcher {
     this.mapFunction = null;
     this.material = null;
     this.lighting = null;
+    this.raycast = null;
+    this.calcNormal = null;
     this.render = new SDFRender();
     this.getSceneColor = null;
     this.mainImage = new SDFMainImage();
@@ -884,6 +888,14 @@ class Marcher {
     this.lighting = lighting;
     return this;
   }
+  setRaycast(raycast: string) {
+    this.raycast = raycast;
+    return this;
+  }
+  setCalcNormal(calcNormal: string) {
+    this.calcNormal = calcNormal;
+    return this;
+  }
   setGetSceneColor(getSceneColor: string) {
     this.getSceneColor = getSceneColor;
     return this;
@@ -907,10 +919,10 @@ class Marcher {
     return this.mapFunction?.shader || defaultShaderMapFunction;
   }
   get shaderRaycast() {
-    return defaultShaderRaycast;
+    return this.raycast || defaultShaderRaycast;
   }
   get shaderNormal() {
-    return defaultShaderNormal;
+    return this.calcNormal || defaultShaderNormal;
   }
   get shaderMaterial() {
     return this.material?.shader || defaultShaderMaterial;

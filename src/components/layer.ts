@@ -1,5 +1,5 @@
 import type { PrimitiveSDF } from "../primitives/primitive";
-import { joinLine } from "../utils";
+import { joinLine, reverse } from "../utils";
 
 class SDFLayer {
   primitives: PrimitiveSDF[];
@@ -22,8 +22,14 @@ class SDFLayer {
     this.customCodesAfter.push(customCode);
     return this;
   }
+  get primitivesShaderArray() {
+    return this.primitives.map((item) => item.totalShader);
+  }
   get primitivesShader() {
-    return joinLine(this.primitives.map((item) => item.totalShader));
+    return joinLine(this.primitivesShaderArray);
+  }
+  get primitivesShaderReverse() {
+    return joinLine(reverse(this.primitivesShaderArray));
   }
   get customCodesBeforeShader() {
     return joinLine(this.customCodesBefore);
@@ -35,7 +41,7 @@ class SDFLayer {
     return `
       {
         ${this.customCodesBeforeShader}
-        ${this.primitivesShader}
+        ${this.primitivesShaderReverse}
         ${this.customCodesAfterShader}
       }
       `;
