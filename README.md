@@ -125,6 +125,12 @@ Demo: https://codesandbox.io/s/uberprim-wtj8y0?file=/src/app.ts
 
 Demo: https://codesandbox.io/s/magicacsg-g8ls17?file=/src/app.ts
 
+### Gyroid
+
+![ma](./assets/previews/gyroid.gif)
+
+Demo: https://codesandbox.io/s/gyroid-i36q79?file=/src/app.ts
+
 ### CSG
 
 ![ma](./assets/previews/csg.png)
