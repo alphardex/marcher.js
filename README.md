@@ -95,6 +95,12 @@ Demo: https://codesandbox.io/s/primitive-zcuy2q?file=/src/app.ts
 
 Demo: https://codesandbox.io/s/boolean-13qfo4?file=/src/app.ts
 
+### Polygon
+
+![ma](./assets/previews/polygon.gif)
+
+Demo: https://codesandbox.io/s/polygon-6ipxc1?file=/src/app.ts
+
 ### Bezier
 
 ![ma](./assets/previews/bezier.gif)
