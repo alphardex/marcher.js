@@ -77,7 +77,7 @@ console.log(mar.fragmentShader);
 
 ## Previews
 
-### Basic Scene
+### Basic
 
 ![ma](./assets/previews/basic.png)
 
