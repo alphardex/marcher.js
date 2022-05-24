@@ -101,6 +101,12 @@ Demo: https://codesandbox.io/s/boolean-13qfo4?file=/src/app.ts
 
 Demo: https://codesandbox.io/s/polygon-6ipxc1?file=/src/app.ts
 
+### Triangle
+
+![ma](./assets/previews/triangle.gif)
+
+Demo: https://codesandbox.io/s/triangle-qrrbpe?file=/src/app.ts
+
 ### Bezier
 
 ![ma](./assets/previews/bezier.gif)
