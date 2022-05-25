@@ -15,6 +15,7 @@ class PrimitiveSDF {
   operationsBefore: string[];
   operationsAfter: string[];
   operationsHalf: string[];
+  operationsSym: string[];
   transforms: string[];
   defaultTransforms: string[];
   scaleXValue: number;
@@ -34,6 +35,7 @@ class PrimitiveSDF {
     this.operationsBefore = [];
     this.operationsAfter = [];
     this.operationsHalf = [];
+    this.operationsSym = [];
     this.transforms = [];
     this.defaultTransforms = [];
     this.scaleXValue = scale;
@@ -79,10 +81,14 @@ class PrimitiveSDF {
   get operationsHalfShader() {
     return joinLine(this.operationsHalf);
   }
+  get operationsSymShader() {
+    return joinLine(this.operationsSym);
+  }
   get totalShader() {
     return joinLine(
       compact([
         this.pointShader,
+        this.operationsSymShader,
         this.defaultTransformsShader,
         this.transformsShader,
         this.operationsBeforeShader,
@@ -257,7 +263,7 @@ class PrimitiveSDF {
     return this;
   }
   sym(axis = "x") {
-    this.operationsBefore.push(
+    this.operationsSym.push(
       `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
     );
     return this;
