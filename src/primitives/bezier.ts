@@ -47,9 +47,9 @@ class BezierSDF extends PrimitiveSDF {
     this.zMax = zMax;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdBezier3D(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},vec2(${toFixed2(this.x1)},${toFixed2(this.y1)}),vec2(${toFixed2(
+    return `float ${this.sdfVarName}=sdBezier3D(${this.pointVarName}/${
+      this.scaleVector
+    },vec2(${toFixed2(this.x1)},${toFixed2(this.y1)}),vec2(${toFixed2(
       this.x2
     )},${toFixed2(this.y2)}),vec2(${toFixed2(this.x3)},${toFixed2(
       this.y3

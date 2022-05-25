@@ -13,9 +13,9 @@ class SphereSDF extends PrimitiveSDF {
     this.radius = radius;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdSphere(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},${toFixed2(this.radius)})*${toFixed2(this.scaleValue)};`;
+    return `float ${this.sdfVarName}=sdSphere(${this.pointVarName}/${
+      this.scaleVector
+    },${toFixed2(this.radius)})*${toFixed2(this.scaleValue)};`;
   }
 }
 

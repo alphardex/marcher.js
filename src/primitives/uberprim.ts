@@ -41,9 +41,9 @@ class UberprimSDF extends PrimitiveSDF {
     this.pointVector = "zxy";
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdUberprim(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},vec4(${toFixed2(this.width)},${toFixed2(this.height)},${toFixed2(
+    return `float ${this.sdfVarName}=sdUberprim(${this.pointVarName}/${
+      this.scaleVector
+    },vec4(${toFixed2(this.width)},${toFixed2(this.height)},${toFixed2(
       this.depth
     )},${toFixed2(this.thickness)}),vec3(${toFixed2(
       this.xCornerRadius

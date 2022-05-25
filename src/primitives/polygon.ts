@@ -29,9 +29,9 @@ class PolygonSDF extends PrimitiveSDF {
     this.pointVector = "zxy";
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdStar3D(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},${toFixed2(this.radius)},${this.edgeCount},${toFixed2(
+    return `float ${this.sdfVarName}=sdStar3D(${this.pointVarName}/${
+      this.scaleVector
+    },${toFixed2(this.radius)},${this.edgeCount},${toFixed2(
       this.angleDivisor
     )},${toFixed2(this.depth)})*${toFixed2(this.scaleValue)};`;
   }

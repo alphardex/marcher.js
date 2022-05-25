@@ -16,7 +16,9 @@ class PrimitiveSDF {
   operationsAfter: string[];
   operationsHalf: string[];
   transforms: string[];
-  scaleValue: number;
+  scaleXValue: number;
+  scaleYValue: number;
+  scaleZValue: number;
   pointVector: string;
   constructor(config: Partial<SDFConfig> = {}) {
     const {
@@ -32,8 +34,21 @@ class PrimitiveSDF {
     this.operationsAfter = [];
     this.operationsHalf = [];
     this.transforms = [];
-    this.scaleValue = scale;
+    this.scaleXValue = scale;
+    this.scaleYValue = scale;
+    this.scaleZValue = scale;
     this.pointVector = "xyz";
+  }
+  get scaleVector() {
+    return `vec3(${toFixed2(this.scaleXValue)},${toFixed2(
+      this.scaleYValue
+    )},${toFixed2(this.scaleZValue)})`;
+  }
+  get scaleValue() {
+    return Math.min(
+      this.scaleXValue,
+      Math.min(this.scaleYValue, this.scaleZValue)
+    );
   }
   get pointVarName() {
     return `${this.sdfVarName}p`;
@@ -129,8 +144,22 @@ class PrimitiveSDF {
     this.rotate(deg, "z");
     return this;
   }
-  scale(value = 1) {
-    this.scaleValue = value;
+  scale(x = 1, y = 1, z = 1) {
+    this.scaleXValue = x;
+    this.scaleYValue = y;
+    this.scaleZValue = z;
+    return this;
+  }
+  scaleX(value = 1) {
+    this.scale(value, 0, 0);
+    return this;
+  }
+  scaleY(value = 1) {
+    this.scale(0, value, 0);
+    return this;
+  }
+  scaleZ(value = 1) {
+    this.scale(0, 0, value);
     return this;
   }
   round(value = 0.1) {

@@ -47,15 +47,15 @@ class TriangleSDF extends PrimitiveSDF {
     this.zMax = zMax;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdTriangle3D(${
-      this.pointVarName
-    }/${toFixed2(this.scaleValue)},vec2(${toFixed2(this.x1)},${toFixed2(
-      this.y1
-    )}),vec2(${toFixed2(this.x2)},${toFixed2(this.y2)}),vec2(${toFixed2(
-      this.x3
-    )},${toFixed2(this.y3)}),${toFixed2(this.xMax)},${toFixed2(
-      this.yMax
-    )},${toFixed2(this.zMax)})*${toFixed2(this.scaleValue)};`;
+    return `float ${this.sdfVarName}=sdTriangle3D(${this.pointVarName}/${
+      this.scaleVector
+    },vec2(${toFixed2(this.x1)},${toFixed2(this.y1)}),vec2(${toFixed2(
+      this.x2
+    )},${toFixed2(this.y2)}),vec2(${toFixed2(this.x3)},${toFixed2(
+      this.y3
+    )}),${toFixed2(this.xMax)},${toFixed2(this.yMax)},${toFixed2(
+      this.zMax
+    )})*${toFixed2(this.scaleValue)};`;
   }
 }
 

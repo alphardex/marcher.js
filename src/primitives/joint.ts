@@ -39,9 +39,9 @@ class JointSDF extends PrimitiveSDF {
     this.r = r;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdCapsule(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},vec3(${toFixed2(this.x1)},${toFixed2(this.y1)},${toFixed2(
+    return `float ${this.sdfVarName}=sdCapsule(${this.pointVarName}/${
+      this.scaleVector
+    },vec3(${toFixed2(this.x1)},${toFixed2(this.y1)},${toFixed2(
       this.z1
     )}),vec3(${toFixed2(this.x2)},${toFixed2(this.y2)},${toFixed2(
       this.z2

@@ -16,9 +16,9 @@ class CylinderSDF extends PrimitiveSDF {
     this.height = height;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdCylinder(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},vec2(${toFixed2(this.radius)},${toFixed2(this.height)}))*${toFixed2(
+    return `float ${this.sdfVarName}=sdCylinder(${this.pointVarName}/${
+      this.scaleVector
+    },vec2(${toFixed2(this.radius)},${toFixed2(this.height)}))*${toFixed2(
       this.scaleValue
     )};`;
   }

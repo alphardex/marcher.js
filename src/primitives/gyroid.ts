@@ -19,9 +19,9 @@ class GyroidSDF extends PrimitiveSDF {
     this.bias = bias;
   }
   get shader() {
-    return `float ${this.sdfVarName}=sdGyroid(${this.pointVarName}/${toFixed2(
-      this.scaleValue
-    )},${toFixed2(this.gyroidScale)},${toFixed2(this.thickness)},${toFixed2(
+    return `float ${this.sdfVarName}=sdGyroid(${this.pointVarName}/${
+      this.scaleVector
+    },${toFixed2(this.gyroidScale)},${toFixed2(this.thickness)},${toFixed2(
       this.bias
     )})*${toFixed2(this.scaleValue)};`;
   }

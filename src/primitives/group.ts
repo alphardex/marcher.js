@@ -42,9 +42,9 @@ class GroupSDF extends PrimitiveSDF {
     `;
   }
   get shader() {
-    return `vec2 ${this.sdfVarName}=${this.mapFuncName}(${
-      this.pointVarName
-    }/${toFixed2(this.scaleValue)})*${toFixed2(this.scaleValue)};`;
+    return `vec2 ${this.sdfVarName}=${this.mapFuncName}(${this.pointVarName}/${
+      this.scaleVector
+    })*${toFixed2(this.scaleValue)};`;
   }
   get addExisting() {
     return `res=opUnion(res,${this.sdfVarName});`;
