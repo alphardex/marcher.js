@@ -9,3 +9,4 @@ export * from "./primitive";
 export * from "./sphere";
 export * from "./triangle";
 export * from "./uberprim";
+export * from "./uberprim/index";

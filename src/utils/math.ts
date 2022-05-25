@@ -6,4 +6,8 @@ const toFixed1 = (num: number) => Number(num).toFixed(1);
 
 const toFixed2 = (num: number) => Number(num).toFixed(2);
 
-export { rad2Deg, deg2rad, toFixed1, toFixed2 };
+const lerp = (x: number, y: number, t: number) => {
+  return (1 - t) * x + t * y;
+};
+
+export { rad2Deg, deg2rad, toFixed1, toFixed2, lerp };
