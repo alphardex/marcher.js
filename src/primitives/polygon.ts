@@ -26,7 +26,7 @@ class PolygonSDF extends PrimitiveSDF {
     this.angleDivisor = angleDivisor;
     this.depth = depth;
 
-    this.pointVector = "zxy";
+    this.defaultTransforms.push(this.getRotateShader(90, "x"));
   }
   get shader() {
     return `float ${this.sdfVarName}=sdStar3D(${this.pointVarName}/${

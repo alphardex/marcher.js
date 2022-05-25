@@ -16,6 +16,7 @@ class PrimitiveSDF {
   operationsAfter: string[];
   operationsHalf: string[];
   transforms: string[];
+  defaultTransforms: string[];
   scaleXValue: number;
   scaleYValue: number;
   scaleZValue: number;
@@ -34,6 +35,7 @@ class PrimitiveSDF {
     this.operationsAfter = [];
     this.operationsHalf = [];
     this.transforms = [];
+    this.defaultTransforms = [];
     this.scaleXValue = scale;
     this.scaleYValue = scale;
     this.scaleZValue = scale;
@@ -65,6 +67,9 @@ class PrimitiveSDF {
   get transformsShader() {
     return joinLine(this.transforms);
   }
+  get defaultTransformsShader() {
+    return joinLine(this.defaultTransforms);
+  }
   get operationsBeforeShader() {
     return joinLine(this.operationsBefore);
   }
@@ -78,6 +83,7 @@ class PrimitiveSDF {
     return joinLine(
       compact([
         this.pointShader,
+        this.defaultTransformsShader,
         this.transformsShader,
         this.operationsBeforeShader,
         this.shader,
@@ -104,12 +110,13 @@ class PrimitiveSDF {
     this.isVisible = false;
     return this;
   }
+  getTranslateShader(x: number, y: number, z: number) {
+    return `${this.pointVarName}+=vec3(${toFixed2(x)},${toFixed2(y)},${toFixed2(
+      z
+    )});`;
+  }
   translate(x = 0, y = 0, z = 0) {
-    this.transforms.push(
-      `${this.pointVarName}+=vec3(${toFixed2(x)},${toFixed2(y)},${toFixed2(
-        z
-      )});`
-    );
+    this.transforms.push(this.getTranslateShader(x, y, z));
     return this;
   }
   translateX(value = 0) {
@@ -124,12 +131,13 @@ class PrimitiveSDF {
     this.translate(0, 0, value);
     return this;
   }
+  getRotateShader(deg: number, axis: string) {
+    return `${this.pointVarName}=rotate${axis.toUpperCase()}(${
+      this.pointVarName
+    },${toFixed2(deg2rad(deg))});`;
+  }
   rotate(deg = 0, axis = "x") {
-    this.transforms.push(
-      `${this.pointVarName}=rotate${axis.toUpperCase()}(${
-        this.pointVarName
-      },${toFixed2(deg2rad(deg))});`
-    );
+    this.transforms.push(this.getRotateShader(deg, axis));
     return this;
   }
   rotateX(deg = 0) {

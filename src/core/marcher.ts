@@ -3,7 +3,7 @@ import type { SDFMaterial } from "../components/material";
 import { SDFRender } from "../components";
 import { SDFMainImage } from "../components";
 import { GroupSDF } from "../primitives/group";
-import { joinLine } from "../utils";
+import { joinLine, reverse } from "../utils";
 
 const defaultShaderSDFUtils = `
 // all sdfs
@@ -939,8 +939,14 @@ class Marcher {
   get shaderMainImage() {
     return this.mainImage?.shader || defaultShaderMainImage;
   }
+  get shaderGroupFunctionsArray() {
+    return this.groups.map((item) => item.mapFuncShader);
+  }
   get shaderGroupFunctions() {
-    return joinLine(this.groups.map((item) => item.mapFuncShader));
+    return joinLine(this.shaderGroupFunctionsArray);
+  }
+  get shaderGroupFunctionsReverse() {
+    return joinLine(reverse(this.shaderGroupFunctionsArray));
   }
   get fragmentShader() {
     return `
@@ -948,7 +954,7 @@ class Marcher {
 
     ${this.utilFunction}
 
-    ${this.shaderGroupFunctions}
+    ${this.shaderGroupFunctionsReverse}
 
     ${this.shaderMapFunction}
 

@@ -60,7 +60,7 @@ class UberprimSDF extends PrimitiveSDF {
     this.bevel = bevel;
     this.cone = cone;
 
-    this.pointVector = "zxy";
+    this.defaultTransforms.push(this.getRotateShader(90, "x"));
   }
   initActualParams() {
     const {
