@@ -151,15 +151,15 @@ class PrimitiveSDF {
     return this;
   }
   scaleX(value = 1) {
-    this.scale(value, 0, 0);
+    this.scale(value, this.scaleYValue, this.scaleZValue);
     return this;
   }
   scaleY(value = 1) {
-    this.scale(0, value, 0);
+    this.scale(this.scaleXValue, value, this.scaleZValue);
     return this;
   }
   scaleZ(value = 1) {
-    this.scale(0, 0, value);
+    this.scale(this.scaleXValue, this.scaleYValue, value);
     return this;
   }
   round(value = 0.1) {
