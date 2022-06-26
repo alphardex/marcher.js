@@ -6,6 +6,7 @@ export * from "./gyroid";
 export * from "./joint";
 export * from "./polygon";
 export * from "./primitive";
+export * from "./rhombus";
 export * from "./sphere";
 export * from "./triangle";
 export * from "./uberprim";
