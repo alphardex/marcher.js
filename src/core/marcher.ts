@@ -849,6 +849,7 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord){
 export interface MarcherConfig {
   antialias: boolean;
   skybox: string;
+  showIsoline: boolean;
 }
 
 class Marcher {
@@ -862,6 +863,7 @@ class Marcher {
   getSceneColor: string | null;
   mainImage: SDFMainImage | null;
   groups: GroupSDF[];
+  showIsoline: boolean;
   constructor(config: Partial<MarcherConfig> = {}) {
     this.utilFunction = "";
     this.mapFunction = null;
@@ -874,7 +876,11 @@ class Marcher {
     this.mainImage = new SDFMainImage();
     this.groups = [];
 
-    const { antialias = false, skybox = "vec3(10.,10.,10.)/255." } = config;
+    const {
+      antialias = false,
+      skybox = "vec3(10.,10.,10.)/255.",
+      showIsoline = false,
+    } = config;
 
     if (antialias) {
       this.mainImage.setAntialias(true);
@@ -882,6 +888,7 @@ class Marcher {
     if (skybox) {
       this.render.setSkyBox(skybox);
     }
+    this.showIsoline = showIsoline;
   }
   setUtilFunction(str: string) {
     this.utilFunction = str;
@@ -959,8 +966,13 @@ class Marcher {
   get shaderGroupFunctionsReverse() {
     return joinLine(reverse(this.shaderGroupFunctionsArray));
   }
+  get shaderIsolineDefine() {
+    return `#define SHOW_ISOLINE ${this.showIsoline ? 1 : 0}`;
+  }
   get fragmentShader() {
     return `
+    ${this.shaderIsolineDefine}
+
     ${this.shaderSDFUtils}
 
     ${this.utilFunction}

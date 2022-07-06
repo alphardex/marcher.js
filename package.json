@@ -1,6 +1,6 @@
 {
   "name": "marcher.js",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "A raymarching shader generator.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
