@@ -20,7 +20,7 @@ class SDFMaterial {
     this.addMaterial(id, str);
     return this;
   }
-  addIsolineMaterial(x = 1, y = 0, z = 1) {
+  addIsolineMaterial(id = DEFAULT_MATERIAL_ID, x = 1, y = 0, z = 1) {
     const str = `
     if(SHOW_ISOLINE==1){
       col=drawIsoline(col,vec3(pos.x*${toFixed1(x)},pos.y*${toFixed1(
@@ -28,7 +28,7 @@ class SDFMaterial {
     )},pos.z*${toFixed1(z)}));
     }
     `;
-    this.materials.push(str);
+    this.addMaterial(id, str);
     return this;
   }
   get shader() {
