@@ -1,0 +1,404 @@
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+</style>
+<div id="sketch"></div>
+<script src="../build/marcher.umd.js"></script>
+<script src="https://unpkg.com/kokomi.js@1.9.24/build/kokomi.umd.js"></script>
+<script src="https://unpkg.com/lil-gui@0.17.0/dist/lil-gui.umd.js"></script>
+<script>
+    dat = lil;
+
+    class Sketch extends kokomi.Base {
+        create() {
+            new kokomi.OrbitControls(this);
+
+            const mar = new marcher.Marcher({
+                antialias: false,
+            });
+
+            const mat = new marcher.SDFMaterial();
+            mat.addColorMaterial("1.0", 0, 0, 0);
+            mar.setMaterial(mat);
+
+            const map = new marcher.SDFMapFunction();
+
+            const layer = new marcher.SDFLayer();
+
+            const params = {
+                shape: "cube",
+                round: 0.1,
+                onion: 0,
+                halfX: false,
+                halfY: false,
+                halfZ: false,
+                cone: 0,
+            };
+
+            const cubeParams = {
+                width: 0.5,
+                height: 0.5,
+                depth: 0.5,
+                thickness: 0.25,
+                xCornerRadius: 0,
+                yCornerRadius: 0,
+                zCornerRadius: 0,
+            };
+
+            const sphereParams = {
+                width: 0.5,
+                height: 0.5,
+                depth: 0.5,
+                thickness: 0.5,
+                xCornerRadius: 0.5,
+                yCornerRadius: 0.5,
+                zCornerRadius: 0,
+            };
+
+            const torusParams = {
+                width: 0.5,
+                height: 0.5,
+                depth: 0.125,
+                thickness: 0.125,
+                xCornerRadius: 0.5,
+                yCornerRadius: 0.125,
+                zCornerRadius: 0,
+            };
+
+            const jointParams = {
+                width: 0.5,
+                height: 0.5,
+                depth: 1,
+                thickness: 0.5,
+                xCornerRadius: 0.5,
+                yCornerRadius: 0.5,
+                zCornerRadius: 0,
+            };
+
+            const coneParams = {
+                width: 0,
+                height: 0,
+                depth: 0.5,
+                thickness: 0.25,
+                xCornerRadius: 0,
+                yCornerRadius: 0,
+                zCornerRadius: 0.5,
+            };
+
+            const cylinderParams = {
+                width: 0.5,
+                height: 0.5,
+                depth: 0.5,
+                thickness: 0.25,
+                xCornerRadius: 0.5,
+                yCornerRadius: 0,
+                zCornerRadius: 0,
+            };
+
+            const uberprim = new marcher.UberprimSDF({
+                sdfVarName: "d1",
+                ...cubeParams,
+            });
+            layer.addPrimitive(uberprim);
+            uberprim.round(params.round);
+
+            map.addLayer(layer);
+
+            mar.setMapFunction(map);
+
+            const rayMarchingQuad = new kokomi.RayMarchingQuad(this, mar);
+            rayMarchingQuad.render();
+
+            console.log(mar.fragmentShader);
+
+            const gui = new dat.GUI();
+
+            const shapeDebug = gui
+                .add(params, "shape", [
+                    "cube",
+                    "sphere",
+                    "torus",
+                    "joint",
+                    "cone",
+                    "cylinder",
+                ])
+                .onChange((value) => {
+                    if (value === "cube") {
+                        widthDebug.setValue(cubeParams.width);
+                        heightDebug.setValue(cubeParams.height);
+                        depthDebug.setValue(cubeParams.depth);
+                        thicknessDebug.setValue(cubeParams.thickness);
+                        xCornerRadiusDebug.setValue(cubeParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(cubeParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(cubeParams.zCornerRadius);
+                    } else if (value === "sphere") {
+                        widthDebug.setValue(sphereParams.width);
+                        heightDebug.setValue(sphereParams.height);
+                        depthDebug.setValue(sphereParams.depth);
+                        thicknessDebug.setValue(sphereParams.thickness);
+                        xCornerRadiusDebug.setValue(sphereParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(sphereParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(sphereParams.zCornerRadius);
+                    } else if (value === "torus") {
+                        widthDebug.setValue(torusParams.width);
+                        heightDebug.setValue(torusParams.height);
+                        depthDebug.setValue(torusParams.depth);
+                        thicknessDebug.setValue(torusParams.thickness);
+                        xCornerRadiusDebug.setValue(torusParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(torusParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(torusParams.zCornerRadius);
+                    } else if (value === "joint") {
+                        widthDebug.setValue(jointParams.width);
+                        heightDebug.setValue(jointParams.height);
+                        depthDebug.setValue(jointParams.depth);
+                        thicknessDebug.setValue(jointParams.thickness);
+                        xCornerRadiusDebug.setValue(jointParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(jointParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(jointParams.zCornerRadius);
+                    } else if (value === "cone") {
+                        widthDebug.setValue(coneParams.width);
+                        heightDebug.setValue(coneParams.height);
+                        depthDebug.setValue(coneParams.depth);
+                        thicknessDebug.setValue(coneParams.thickness);
+                        xCornerRadiusDebug.setValue(coneParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(coneParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(coneParams.zCornerRadius);
+                    } else if (value === "cylinder") {
+                        widthDebug.setValue(cylinderParams.width);
+                        heightDebug.setValue(cylinderParams.height);
+                        depthDebug.setValue(cylinderParams.depth);
+                        thicknessDebug.setValue(cylinderParams.thickness);
+                        xCornerRadiusDebug.setValue(cylinderParams.xCornerRadius);
+                        yCornerRadiusDebug.setValue(cylinderParams.yCornerRadius);
+                        zCornerRadiusDebug.setValue(cylinderParams.zCornerRadius);
+                    }
+                    rayMarchingQuad.render();
+                });
+
+            const customShape = () => {
+                rayMarchingQuad.render();
+            };
+
+            const basicFolder = gui.addFolder("Basic");
+            basicFolder.close();
+
+            const widthDebug = basicFolder
+                .add(uberprim, "width")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Width")
+                .onChange(() => {
+                    customShape();
+                });
+            const heightDebug = basicFolder
+                .add(uberprim, "height")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Height")
+                .onChange(() => {
+                    customShape();
+                });
+            const depthDebug = basicFolder
+                .add(uberprim, "depth")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Depth")
+                .onChange(() => {
+                    customShape();
+                });
+            const thicknessDebug = basicFolder
+                .add(uberprim, "thickness")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Thickness")
+                .onChange(() => {
+                    customShape();
+                });
+            const xCornerRadiusDebug = basicFolder
+                .add(uberprim, "xCornerRadius")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("x Corner Radius")
+                .onChange(() => {
+                    customShape();
+                });
+            const yCornerRadiusDebug = basicFolder
+                .add(uberprim, "yCornerRadius")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("y Corner Radius")
+                .onChange(() => {
+                    customShape();
+                });
+            const zCornerRadiusDebug = basicFolder
+                .add(uberprim, "zCornerRadius")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("z Corner Radius")
+                .onChange(() => {
+                    customShape();
+                });
+
+            const magicaCSGFolder = gui.addFolder("Magica CSG");
+            magicaCSGFolder
+                .add(params, "halfX")
+                .name("HalfX")
+                .onChange((value) => {
+                    if (value) {
+                        uberprim.halfX();
+                    } else {
+                        uberprim.removeOperation("opHalfX");
+                    }
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(params, "halfY")
+                .name("HalfY")
+                .onChange((value) => {
+                    if (value) {
+                        uberprim.halfY();
+                    } else {
+                        uberprim.removeOperation("opHalfY");
+                    }
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(params, "halfZ")
+                .name("HalfZ")
+                .onChange((value) => {
+                    if (value) {
+                        uberprim.halfZ();
+                    } else {
+                        uberprim.removeOperation("opHalfZ");
+                    }
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(params, "onion")
+                .min(0)
+                .max(0.1)
+                .step(0.0001)
+                .name("Shell")
+                .onChange((value) => {
+                    uberprim.removeOperation("opOnion");
+                    uberprim.onion(value);
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(uberprim, "thickness")
+                .min(0)
+                .max(0.25)
+                .step(0.01)
+                .name("Hole")
+                .onChange(() => {
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(uberprim, "xCornerRadius")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Bevel")
+                .onChange(() => {
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(params, "round")
+                .min(0)
+                .max(0.5)
+                .step(0.01)
+                .name("Round")
+                .onChange((value) => {
+                    uberprim.removeOperation("opRound");
+                    uberprim.round(value);
+                    customShape();
+                });
+            magicaCSGFolder
+                .add(params, "cone")
+                .min(0)
+                .max(1)
+                .step(0.01)
+                .name("Cone")
+                .onChange((value) => {
+                    if (params.shape === "cube") {
+                        const width = THREE.MathUtils.lerp(cubeParams.depth, 0, value);
+                        widthDebug.setValue(width);
+                        const height = THREE.MathUtils.lerp(cubeParams.depth, 0, value);
+                        heightDebug.setValue(height);
+                        const zCornerRadius = THREE.MathUtils.lerp(
+                            0,
+                            cubeParams.depth,
+                            value
+                        );
+                        zCornerRadiusDebug.setValue(zCornerRadius);
+                    } else if (params.shape === "joint") {
+                        const width = THREE.MathUtils.lerp(jointParams.depth / 2, 0, value);
+                        widthDebug.setValue(width);
+                        const height = THREE.MathUtils.lerp(jointParams.depth / 2, 0, value);
+                        heightDebug.setValue(height);
+                        const zCornerRadius = THREE.MathUtils.lerp(
+                            0,
+                            jointParams.depth,
+                            value
+                        );
+                        zCornerRadiusDebug.setValue(zCornerRadius);
+
+                        const thickness = THREE.MathUtils.lerp(
+                            jointParams.thickness,
+                            jointParams.thickness / 2,
+                            value
+                        );
+                        thicknessDebug.setValue(thickness);
+                        const xCornerRadius = THREE.MathUtils.lerp(
+                            jointParams.xCornerRadius,
+                            0,
+                            value
+                        );
+                        xCornerRadiusDebug.setValue(xCornerRadius);
+                        const yCornerRadius = THREE.MathUtils.lerp(
+                            jointParams.yCornerRadius,
+                            0,
+                            value
+                        );
+                        yCornerRadiusDebug.setValue(yCornerRadius);
+                    } else if (params.shape === "cylinder") {
+                        const width = THREE.MathUtils.lerp(cylinderParams.depth, 0, value);
+                        widthDebug.setValue(width);
+                        const height = THREE.MathUtils.lerp(cylinderParams.depth, 0, value);
+                        heightDebug.setValue(height);
+                        const zCornerRadius = THREE.MathUtils.lerp(
+                            0,
+                            cylinderParams.depth,
+                            value
+                        );
+                        zCornerRadiusDebug.setValue(zCornerRadius);
+
+                        const xCornerRadius = THREE.MathUtils.lerp(
+                            cylinderParams.xCornerRadius,
+                            0,
+                            value
+                        );
+                        xCornerRadiusDebug.setValue(xCornerRadius);
+                    }
+                    customShape();
+                });
+        }
+    }
+
+    const createSketch = () => {
+        const sketch = new Sketch();
+        sketch.create();
+        return sketch;
+    };
+
+    createSketch();
+</script>

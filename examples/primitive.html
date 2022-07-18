@@ -1,0 +1,152 @@
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+</style>
+<div id="sketch"></div>
+<script src="../build/marcher.umd.js"></script>
+<script src="https://unpkg.com/kokomi.js@1.9.24/build/kokomi.umd.js"></script>
+<script src="https://unpkg.com/lil-gui@0.17.0/dist/lil-gui.umd.js"></script>
+<script>
+    dat = lil;
+
+    class Sketch extends kokomi.Base {
+        create() {
+            new kokomi.OrbitControls(this);
+
+            const mar = new marcher.Marcher({
+                antialias: false,
+            });
+
+            const map = new marcher.SDFMapFunction();
+
+            // origin
+            {
+                const layer = new marcher.SDFLayer();
+
+                const g = new marcher.GroupSDF({
+                    mapFuncName: "g1",
+                });
+                mar.addGroup(g);
+                layer.addPrimitive(g);
+                g.translateZ(4);
+
+                const box = new marcher.BoxSDF({
+                    sdfVarName: "d1",
+                });
+                g.addPrimitive(box);
+                box.round(0.1).translateX(6);
+
+                const sphere = new marcher.SphereSDF({
+                    sdfVarName: "d2",
+                });
+                g.addPrimitive(sphere);
+                sphere.round(0.1).translateX(4);
+
+                const cylinder = new marcher.CylinderSDF({
+                    sdfVarName: "d3",
+                });
+                g.addPrimitive(cylinder);
+                cylinder.round(0.1).translateX(2);
+
+                const polygon = new marcher.PolygonSDF({
+                    sdfVarName: "d4",
+                });
+                g.addPrimitive(polygon);
+                polygon.round(0.1).translateX(0);
+
+                const triangle = new marcher.TriangleSDF({
+                    sdfVarName: "d5",
+                });
+                g.addPrimitive(triangle);
+                triangle.round(0.1).translateX(-2);
+
+                const joint = new marcher.JointSDF({
+                    sdfVarName: "d6",
+                });
+                g.addPrimitive(joint);
+                joint.round(0.1).translateX(-4);
+
+                const bezier = new marcher.BezierSDF({
+                    sdfVarName: "d7",
+                });
+                g.addPrimitive(bezier);
+                bezier.round(0.1).translateX(-6);
+
+                map.addLayer(layer);
+            }
+
+            // onion
+            {
+                const layer = new marcher.SDFLayer();
+
+                const g = new marcher.GroupSDF({
+                    mapFuncName: "g2",
+                });
+                mar.addGroup(g);
+                layer.addPrimitive(g);
+                g.translateZ(1);
+
+                const box = new marcher.BoxSDF({
+                    sdfVarName: "d1",
+                });
+                g.addPrimitive(box);
+                box.round(0.1).onion(0.05).halfY().translateX(6);
+
+                const sphere = new marcher.SphereSDF({
+                    sdfVarName: "d2",
+                });
+                g.addPrimitive(sphere);
+                sphere.round(0.1).onion(0.05).halfY().translateX(4);
+
+                const cylinder = new marcher.CylinderSDF({
+                    sdfVarName: "d3",
+                });
+                g.addPrimitive(cylinder);
+                cylinder.round(0.1).onion(0.05).halfY().translateX(2);
+
+                const polygon = new marcher.PolygonSDF({
+                    sdfVarName: "d4",
+                });
+                g.addPrimitive(polygon);
+                polygon.round(0.1).onion(0.05).halfY().translateX(0);
+
+                const triangle = new marcher.TriangleSDF({
+                    sdfVarName: "d5",
+                });
+                g.addPrimitive(triangle);
+                triangle.round(0.1).onion(0.05).halfY().translateX(-2);
+
+                const joint = new marcher.JointSDF({
+                    sdfVarName: "d6",
+                });
+                g.addPrimitive(joint);
+                joint.round(0.1).onion(0.05).halfY().translateX(-4);
+
+                const rhombus = new marcher.RhombusSDF({
+                    sdfVarName: "d7",
+                });
+                g.addPrimitive(rhombus);
+                rhombus.round(0.1).translateX(-6);
+
+                map.addLayer(layer);
+            }
+
+            mar.setMapFunction(map);
+
+            const rayMarchingQuad = new kokomi.RayMarchingQuad(this, mar);
+            rayMarchingQuad.render();
+
+            console.log(mar.fragmentShader);
+        }
+    }
+
+    const createSketch = () => {
+        const sketch = new Sketch();
+        sketch.create();
+        return sketch;
+    };
+
+    createSketch();
+</script>
