@@ -169,9 +169,41 @@ class PrimitiveSDF {
     this.scale(this.scaleXValue, this.scaleYValue, value);
     return this;
   }
+  elongate(x = 0.1, y = 0.1, z = 0.1) {
+    this.operationsBefore.push(
+      `${this.pointVarName}=opElongate(${this.pointVarName},vec3(${toFixed2(
+        x
+      )},${toFixed2(y)},${toFixed2(z)})).xyz;`
+    );
+    return this;
+  }
+  elongateX(value = 0.1) {
+    this.elongate(value, 0, 0);
+    return this;
+  }
+  elongateY(value = 0.1) {
+    this.elongate(0, value, 0);
+    return this;
+  }
+  elongateZ(value = 0.1) {
+    this.elongate(0, 0, value);
+    return this;
+  }
   round(value = 0.1) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opRound(${this.sdfVarName},${toFixed2(value)});`
+    );
+    return this;
+  }
+  onion(value = 0.03) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
+    );
+    return this;
+  }
+  shell(value = 0.03) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opShell(${this.sdfVarName},${toFixed2(value)});`
     );
     return this;
   }
@@ -223,6 +255,24 @@ class PrimitiveSDF {
     sdf.hide();
     return this;
   }
+  sym(axis = "x") {
+    this.operationsSym.push(
+      `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
+    );
+    return this;
+  }
+  symX() {
+    this.sym("x");
+    return this;
+  }
+  symY() {
+    this.sym("y");
+    return this;
+  }
+  symZ() {
+    this.sym("z");
+    return this;
+  }
   rep(x = 3, y = 3, z = 3) {
     this.operationsBefore.push(
       `${this.pointVarName}=opRep(${this.pointVarName},vec3(${toFixed2(
@@ -252,56 +302,6 @@ class PrimitiveSDF {
       `${this.pointVarName}=opCheapBend(${this.pointVarName},${toFixed2(
         value
       )});`
-    );
-    return this;
-  }
-  sym(axis = "x") {
-    this.operationsSym.push(
-      `${this.pointVarName}=opSym${axis.toUpperCase()}(${this.pointVarName});`
-    );
-    return this;
-  }
-  symX() {
-    this.sym("x");
-    return this;
-  }
-  symY() {
-    this.sym("y");
-    return this;
-  }
-  symZ() {
-    this.sym("z");
-    return this;
-  }
-  elongate(x = 0.1, y = 0.1, z = 0.1) {
-    this.operationsBefore.push(
-      `${this.pointVarName}=opElongate(${this.pointVarName},vec3(${toFixed2(
-        x
-      )},${toFixed2(y)},${toFixed2(z)})).xyz;`
-    );
-    return this;
-  }
-  elongateX(value = 0.1) {
-    this.elongate(value, 0, 0);
-    return this;
-  }
-  elongateY(value = 0.1) {
-    this.elongate(0, value, 0);
-    return this;
-  }
-  elongateZ(value = 0.1) {
-    this.elongate(0, 0, value);
-    return this;
-  }
-  onion(value = 0.03) {
-    this.operationsAfter.push(
-      `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
-    );
-    return this;
-  }
-  shell(value = 0.03) {
-    this.operationsAfter.push(
-      `${this.sdfVarName}=opShell(${this.sdfVarName},${toFixed2(value)});`
     );
     return this;
   }
