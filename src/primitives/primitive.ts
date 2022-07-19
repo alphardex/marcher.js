@@ -4,8 +4,6 @@ import { compact, deg2rad, joinLine, toFixed2 } from "../utils";
 export interface SDFConfig {
   sdfVarName: string;
   materialId: string;
-  isVisible: boolean;
-  scale: number;
 }
 
 class PrimitiveSDF {
@@ -23,24 +21,19 @@ class PrimitiveSDF {
   scaleZValue: number;
   pointVector: string;
   constructor(config: Partial<SDFConfig> = {}) {
-    const {
-      sdfVarName = "dt",
-      materialId = DEFAULT_MATERIAL_ID,
-      isVisible = true,
-      scale = 1,
-    } = config;
+    const { sdfVarName = "dt", materialId = DEFAULT_MATERIAL_ID } = config;
     this.sdfVarName = sdfVarName;
     this.materialId = materialId;
-    this.isVisible = isVisible;
+    this.isVisible = true;
     this.operationsBefore = [];
     this.operationsAfter = [];
     this.operationsHalf = [];
     this.operationsSym = [];
     this.transforms = [];
     this.defaultTransforms = [];
-    this.scaleXValue = scale;
-    this.scaleYValue = scale;
-    this.scaleZValue = scale;
+    this.scaleXValue = 1;
+    this.scaleYValue = 1;
+    this.scaleZValue = 1;
     this.pointVector = "xyz";
   }
   get scaleVector() {
@@ -303,6 +296,12 @@ class PrimitiveSDF {
   onion(value = 0.03) {
     this.operationsAfter.push(
       `${this.sdfVarName}=opOnion(${this.sdfVarName},${toFixed2(value)});`
+    );
+    return this;
+  }
+  shell(value = 0.03) {
+    this.operationsAfter.push(
+      `${this.sdfVarName}=opShell(${this.sdfVarName},${toFixed2(value)});`
     );
     return this;
   }
