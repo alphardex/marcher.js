@@ -2,6 +2,18 @@
 const float PI=3.14159265359;
 const float TWO_PI=6.28318530718;
 
+// all sdfs
+#pragma glslify:sdBox=require(glsl-sdf/3d/primitives/sdBox)
+#pragma glslify:sdSphere=require(glsl-sdf/3d/primitives/sdSphere)
+#pragma glslify:sdCylinder=require(glsl-sdf/3d/primitives/sdCylinder)
+#pragma glslify:sdCapsule=require(glsl-sdf/3d/primitives/sdCapsule)
+#pragma glslify:sdBezier3D=require(glsl-sdf/extra/primitives/sdBezier3D)
+#pragma glslify:sdUberprim=require(glsl-sdf/extra/primitives/sdUberprim)
+#pragma glslify:sdStar3D=require(glsl-sdf/extra/primitives/sdStar3D)
+#pragma glslify:sdTriangle3D=require(glsl-sdf/extra/primitives/sdTriangle3D)
+#pragma glslify:sdGyroid=require(glsl-sdf/extra/primitives/sdGyroid)
+#pragma glslify:sdRhombus=require(glsl-sdf/3d/primitives/sdRhombus)
+
 // sdf ops
 #pragma glslify:opElongate=require(glsl-sdf/3d/alterations/opElongate)
 #pragma glslify:opRound=require(glsl-sdf/3d/alterations/opRound)
@@ -30,18 +42,6 @@ const float TWO_PI=6.28318530718;
 #pragma glslify:opHalfX=require(glsl-sdf/extra/alterations/opHalfX)
 #pragma glslify:opHalfY=require(glsl-sdf/extra/alterations/opHalfY)
 #pragma glslify:opHalfZ=require(glsl-sdf/extra/alterations/opHalfZ)
-
-// all sdfs
-#pragma glslify:sdBox=require(glsl-sdf/3d/primitives/sdBox)
-#pragma glslify:sdSphere=require(glsl-sdf/3d/primitives/sdSphere)
-#pragma glslify:sdCylinder=require(glsl-sdf/3d/primitives/sdCylinder)
-#pragma glslify:sdCapsule=require(glsl-sdf/3d/primitives/sdCapsule)
-#pragma glslify:sdBezier3D=require(glsl-sdf/extra/primitives/sdBezier3D)
-#pragma glslify:sdUberprim=require(glsl-sdf/extra/primitives/sdUberprim)
-#pragma glslify:sdStar3D=require(glsl-sdf/extra/primitives/sdStar3D)
-#pragma glslify:sdTriangle3D=require(glsl-sdf/extra/primitives/sdTriangle3D)
-#pragma glslify:sdGyroid=require(glsl-sdf/extra/primitives/sdGyroid)
-#pragma glslify:sdRhombus=require(glsl-sdf/3d/primitives/sdRhombus)
 
 // ray
 #pragma glslify:normalizeScreenCoords=require(glsl-takara/vector/normalizeScreenCoords)
