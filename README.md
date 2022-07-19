@@ -41,23 +41,20 @@ mar.setMaterial(mat);
 // create SDF map function
 const map = new marcher.SDFMapFunction();
 
-// code block
-{
-  // create a layer
-  const layer = new marcher.SDFLayer();
+// create a layer
+const layer = new marcher.SDFLayer();
 
-  // create a box SDF
-  const box = new marcher.BoxSDF({
-    sdfVarName: "d1",
-  });
-  // add box SDF to the layer
-  layer.addPrimitive(box);
-  // make round corners for box SDF
-  box.round(0.1);
+// create a box SDF
+const box = new marcher.BoxSDF({
+  sdfVarName: "d1",
+});
+// add box SDF to the layer
+layer.addPrimitive(box);
+// make round corners for box SDF
+box.round(0.1);
 
-  // add layer to the map function
-  map.addLayer(layer);
-}
+// add layer to the map function
+map.addLayer(layer);
 
 // use the map function
 mar.setMapFunction(map);
@@ -70,7 +67,7 @@ console.log(mar.fragmentShader);
 
 ## Features
 
-- Write raymarching code in JavaScript (GLSL for customization :d)
+- Write raymarching code in JavaScript (fully customizable)
 - Zero dependency
 - Fully typed
 - Shadertoy support

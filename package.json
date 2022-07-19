@@ -2,7 +2,9 @@
   "name": "marcher.js",
   "version": "1.4.0",
   "description": "A raymarching shader generator.",
-  "main": "./dist/index.js",
+  "main": "./build/marcher.cjs.js",
+  "module": "./build/marcher.esm.js",
+  "browser": "./build/marcher.umd.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc && rollup -c"
