@@ -1,3 +1,4 @@
+import { lerp } from "../../utils";
 import { UberprimSDF, UberprimSDFConfig } from "../uberprim";
 
 class UberprimBoxSDF extends UberprimSDF {
@@ -18,22 +19,33 @@ class UberprimBoxSDF extends UberprimSDF {
 
     this.initActualParams();
 
-    this.setHole(this.hole);
-    this.setBevel(this.bevel);
-    this.setCone(this.cone);
+    this.setUberHole(this.uberHole);
+    this.setUberBevel(this.uberBevel);
+    this.setUberCone(this.uberCone);
   }
-  setHole(value: number) {
-    super.setHole(value);
+  setParameterByHole() {
+    this.thickness = this.intrinsicParams.width / 2 - this.uberHole;
+  }
+  setParameterByBevel() {
+    this.xCornerRadius = this.uberBevel;
+  }
+  setParameterByCone() {
+    this.width = lerp(this.intrinsicParams.depth, 0, this.uberCone);
+    this.height = lerp(this.intrinsicParams.depth, 0, this.uberCone);
+    this.zCornerRadius = lerp(0, this.intrinsicParams.depth, this.uberCone);
+  }
+  setUberHole(value: number) {
+    super.setUberHole(value);
 
     this.setParameterByHole();
   }
-  setBevel(value: number) {
-    super.setBevel(value);
+  setUberBevel(value: number) {
+    super.setUberBevel(value);
 
     this.setParameterByBevel();
   }
-  setCone(value: number) {
-    super.setCone(value);
+  setUberCone(value: number) {
+    super.setUberCone(value);
 
     this.setParameterByCone();
   }

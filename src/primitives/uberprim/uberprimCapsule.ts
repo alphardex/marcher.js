@@ -19,25 +19,33 @@ class UberprimCapsuleSDF extends UberprimSDF {
 
     this.initActualParams();
 
-    this.setCone(this.cone);
-  }
-  setCone(value: number) {
-    super.setCone(value);
-
-    this.setParameterByCone();
+    this.setUberCone(this.uberCone);
   }
   setParameterByCone() {
-    this.width = lerp(this.intrinsicParams.depth / 2, 0, this.cone);
-    this.height = lerp(this.intrinsicParams.depth / 2, 0, this.cone);
-    this.zCornerRadius = lerp(0, this.intrinsicParams.depth / 2, this.cone);
+    this.width = lerp(this.intrinsicParams.depth / 2, 0, this.uberCone);
+    this.height = lerp(this.intrinsicParams.depth / 2, 0, this.uberCone);
+    this.zCornerRadius = lerp(0, this.intrinsicParams.depth / 2, this.uberCone);
 
     this.thickness = lerp(
       this.intrinsicParams.thickness,
       this.intrinsicParams.thickness / 2,
-      this.cone
+      this.uberCone
     );
-    this.xCornerRadius = lerp(this.intrinsicParams.xCornerRadius, 0, this.cone);
-    this.yCornerRadius = lerp(this.intrinsicParams.yCornerRadius, 0, this.cone);
+    this.xCornerRadius = lerp(
+      this.intrinsicParams.xCornerRadius,
+      0,
+      this.uberCone
+    );
+    this.yCornerRadius = lerp(
+      this.intrinsicParams.yCornerRadius,
+      0,
+      this.uberCone
+    );
+  }
+  setUberCone(value: number) {
+    super.setUberCone(value);
+
+    this.setParameterByCone();
   }
 }
 

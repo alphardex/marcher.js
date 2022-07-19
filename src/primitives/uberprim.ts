@@ -12,9 +12,9 @@ export interface UberprimIntrinsicParams {
 }
 
 export interface UberprimSDFConfig extends SDFConfig {
-  hole: number;
-  bevel: number;
-  cone: number;
+  uberHole: number;
+  uberBevel: number;
+  uberCone: number;
 }
 
 class UberprimSDF extends PrimitiveSDF {
@@ -26,9 +26,9 @@ class UberprimSDF extends PrimitiveSDF {
   xCornerRadius: number;
   yCornerRadius: number;
   zCornerRadius: number;
-  hole: number;
-  bevel: number;
-  cone: number;
+  uberHole: number;
+  uberBevel: number;
+  uberCone: number;
   constructor(config: Partial<UberprimSDFConfig> = {}) {
     super(config);
 
@@ -54,11 +54,11 @@ class UberprimSDF extends PrimitiveSDF {
 
     this.initActualParams();
 
-    const { hole = 0, bevel = 0, cone = 0 } = config;
+    const { uberHole = 0, uberBevel = 0, uberCone = 0 } = config;
 
-    this.hole = hole;
-    this.bevel = bevel;
-    this.cone = cone;
+    this.uberHole = uberHole;
+    this.uberBevel = uberBevel;
+    this.uberCone = uberCone;
 
     this.defaultTransforms.push(this.getRotateShader(90, "x"));
   }
@@ -81,25 +81,14 @@ class UberprimSDF extends PrimitiveSDF {
     this.yCornerRadius = yCornerRadius;
     this.zCornerRadius = zCornerRadius;
   }
-  setHole(value: number) {
-    this.hole = value;
+  setUberHole(value: number) {
+    this.uberHole = value;
   }
-  setParameterByHole() {
-    this.thickness = this.intrinsicParams.width / 2 - this.hole;
+  setUberBevel(value: number) {
+    this.uberBevel = value;
   }
-  setBevel(value: number) {
-    this.bevel = value;
-  }
-  setParameterByBevel() {
-    this.xCornerRadius = this.bevel;
-  }
-  setCone(value: number) {
-    this.cone = value;
-  }
-  setParameterByCone() {
-    this.width = lerp(this.intrinsicParams.depth, 0, this.cone);
-    this.height = lerp(this.intrinsicParams.depth, 0, this.cone);
-    this.zCornerRadius = lerp(0, this.intrinsicParams.depth, this.cone);
+  setUberCone(value: number) {
+    this.uberCone = value;
   }
   get shader() {
     return `float ${this.sdfVarName}=sdUberprim(${this.pointVarName}/${

@@ -19,25 +19,32 @@ class UberprimCylinderSDF extends UberprimSDF {
 
     this.initActualParams();
 
-    this.setHole(this.hole);
-    this.setCone(this.cone);
+    this.setUberHole(this.uberHole);
+    this.setUberCone(this.uberCone);
   }
-  setHole(value: number) {
-    super.setHole(value);
+  setParameterByHole() {
+    this.thickness = this.intrinsicParams.width / 2 - this.uberHole;
+  }
+  setParameterByCone() {
+    this.width = lerp(this.intrinsicParams.depth, 0, this.uberCone);
+    this.height = lerp(this.intrinsicParams.depth, 0, this.uberCone);
+    this.zCornerRadius = lerp(0, this.intrinsicParams.depth, this.uberCone);
+
+    this.xCornerRadius = lerp(
+      this.intrinsicParams.xCornerRadius,
+      0,
+      this.uberCone
+    );
+  }
+  setUberHole(value: number) {
+    super.setUberHole(value);
 
     this.setParameterByHole();
   }
-  setCone(value: number) {
-    super.setCone(value);
+  setUberCone(value: number) {
+    super.setUberCone(value);
 
     this.setParameterByCone();
-  }
-  setParameterByCone() {
-    this.width = lerp(this.intrinsicParams.depth, 0, this.cone);
-    this.height = lerp(this.intrinsicParams.depth, 0, this.cone);
-    this.zCornerRadius = lerp(0, this.intrinsicParams.depth, this.cone);
-
-    this.xCornerRadius = lerp(this.intrinsicParams.xCornerRadius, 0, this.cone);
   }
 }
 
