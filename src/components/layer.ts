@@ -37,12 +37,17 @@ class SDFLayer {
   get customCodesAfterShader() {
     return joinLine(this.customCodesAfter);
   }
+  get totalShaderArray() {
+    return [
+      this.customCodesBeforeShader,
+      this.primitivesShaderReverse,
+      this.customCodesAfterShader,
+    ];
+  }
   get shader() {
     return `
       {
-        ${this.customCodesBeforeShader}
-        ${this.primitivesShaderReverse}
-        ${this.customCodesAfterShader}
+        ${joinLine(this.totalShaderArray)}
       }
       `;
   }

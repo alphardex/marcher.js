@@ -6,8 +6,8 @@ vec3 getSceneColor(vec2 fragCoord){
     const float fl=2.5;
     
     vec2 m=iMouse.xy/iResolution.xy;
-    ro.yz=rotate(ro.yz,-m.y*PI_1+1.);
-    ro.xz=rotate(ro.xz,-m.x*TWO_PI_2666156403);
+    ro.yz=rotate(ro.yz,-m.y*PI+1.);
+    ro.xz=rotate(ro.xz,-m.x*TWO_PI);
     
     vec3 rd=getRayDirection(p,ro,ta,fl);
     
