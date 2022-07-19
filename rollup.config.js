@@ -2,6 +2,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import { terser } from "rollup-plugin-terser";
+import glslify from "rollup-plugin-glslify";
 
 export default [
   // browser-friendly UMD build
@@ -17,6 +18,7 @@ export default [
       commonjs(), // so Rollup can convert `ms` to an ES module
       typescript(), // so Rollup can convert TypeScript to JavaScript
       terser(), // so Rollup can minify js code
+      glslify(),
     ],
   },
 ];
