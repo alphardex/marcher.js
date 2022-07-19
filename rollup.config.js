@@ -36,7 +36,6 @@ export default [
     ],
     plugins: [
       typescript(), // so Rollup can convert TypeScript to JavaScript
-      terser(), // so Rollup can minify js code
       glslify(),
     ],
   },
