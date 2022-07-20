@@ -328,59 +328,59 @@
                 .name("Cone")
                 .onChange((value) => {
                     if (params.shape === "cube") {
-                        const width = THREE.MathUtils.lerp(cubeParams.depth, 0, value);
+                        const width = marcher.lerp(cubeParams.depth, 0, value);
                         widthDebug.setValue(width);
-                        const height = THREE.MathUtils.lerp(cubeParams.depth, 0, value);
+                        const height = marcher.lerp(cubeParams.depth, 0, value);
                         heightDebug.setValue(height);
-                        const zCornerRadius = THREE.MathUtils.lerp(
+                        const zCornerRadius = marcher.lerp(
                             0,
                             cubeParams.depth,
                             value
                         );
                         zCornerRadiusDebug.setValue(zCornerRadius);
                     } else if (params.shape === "joint") {
-                        const width = THREE.MathUtils.lerp(jointParams.depth / 2, 0, value);
+                        const width = marcher.lerp(jointParams.depth / 2, 0, value);
                         widthDebug.setValue(width);
-                        const height = THREE.MathUtils.lerp(jointParams.depth / 2, 0, value);
+                        const height = marcher.lerp(jointParams.depth / 2, 0, value);
                         heightDebug.setValue(height);
-                        const zCornerRadius = THREE.MathUtils.lerp(
+                        const zCornerRadius = marcher.lerp(
                             0,
                             jointParams.depth,
                             value
                         );
                         zCornerRadiusDebug.setValue(zCornerRadius);
 
-                        const thickness = THREE.MathUtils.lerp(
+                        const thickness = marcher.lerp(
                             jointParams.thickness,
                             jointParams.thickness / 2,
                             value
                         );
                         thicknessDebug.setValue(thickness);
-                        const xCornerRadius = THREE.MathUtils.lerp(
+                        const xCornerRadius = marcher.lerp(
                             jointParams.xCornerRadius,
                             0,
                             value
                         );
                         xCornerRadiusDebug.setValue(xCornerRadius);
-                        const yCornerRadius = THREE.MathUtils.lerp(
+                        const yCornerRadius = marcher.lerp(
                             jointParams.yCornerRadius,
                             0,
                             value
                         );
                         yCornerRadiusDebug.setValue(yCornerRadius);
                     } else if (params.shape === "cylinder") {
-                        const width = THREE.MathUtils.lerp(cylinderParams.depth, 0, value);
+                        const width = marcher.lerp(cylinderParams.depth, 0, value);
                         widthDebug.setValue(width);
-                        const height = THREE.MathUtils.lerp(cylinderParams.depth, 0, value);
+                        const height = marcher.lerp(cylinderParams.depth, 0, value);
                         heightDebug.setValue(height);
-                        const zCornerRadius = THREE.MathUtils.lerp(
+                        const zCornerRadius = marcher.lerp(
                             0,
                             cylinderParams.depth,
                             value
                         );
                         zCornerRadiusDebug.setValue(zCornerRadius);
 
-                        const xCornerRadius = THREE.MathUtils.lerp(
+                        const xCornerRadius = marcher.lerp(
                             cylinderParams.xCornerRadius,
                             0,
                             value

@@ -10,31 +10,65 @@ class PrimitiveSDF {
   sdfVarName: string;
   materialId: string;
   isVisible: boolean;
+  translateXValue: number;
+  translateYValue: number;
+  translateZValue: number;
+  rotateXValue: number;
+  rotateYValue: number;
+  rotateZValue: number;
+  scaleXValue: number;
+  scaleYValue: number;
+  scaleZValue: number;
   operationsBefore: string[];
   operationsAfter: string[];
   operationsHalf: string[];
   operationsSym: string[];
-  transforms: string[];
-  defaultTransforms: string[];
-  scaleXValue: number;
-  scaleYValue: number;
-  scaleZValue: number;
-  pointVector: string;
   constructor(config: Partial<SDFConfig> = {}) {
     const { sdfVarName = "dt", materialId = DEFAULT_MATERIAL_ID } = config;
     this.sdfVarName = sdfVarName;
     this.materialId = materialId;
     this.isVisible = true;
+    this.translateXValue = 0;
+    this.translateYValue = 0;
+    this.translateZValue = 0;
+    this.rotateXValue = 0;
+    this.rotateYValue = 0;
+    this.rotateZValue = 0;
+    this.scaleXValue = 1;
+    this.scaleYValue = 1;
+    this.scaleZValue = 1;
     this.operationsBefore = [];
     this.operationsAfter = [];
     this.operationsHalf = [];
     this.operationsSym = [];
-    this.transforms = [];
-    this.defaultTransforms = [];
-    this.scaleXValue = 1;
-    this.scaleYValue = 1;
-    this.scaleZValue = 1;
-    this.pointVector = "xyz";
+  }
+  // -- add start --
+  get pointVarName() {
+    return `${this.sdfVarName}p`;
+  }
+  get pointShader() {
+    return `vec3 ${this.pointVarName}=pos;`;
+  }
+  get shader() {
+    return ``;
+  }
+  get addExisting() {
+    return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;
+  }
+  get totalShader() {
+    return joinLine(
+      compact([
+        this.pointShader,
+        this.positionShader,
+        this.operationsSymShader,
+        this.rotationShader,
+        this.operationsBeforeShader,
+        this.shader,
+        this.operationsAfterShader,
+        this.operationsHalfShader,
+        this.isVisible ? this.addExisting : "",
+      ])
+    );
   }
   get scaleVector() {
     return `vec3(${toFixed2(this.scaleXValue)},${toFixed2(
@@ -47,60 +81,6 @@ class PrimitiveSDF {
       Math.min(this.scaleYValue, this.scaleZValue)
     );
   }
-  get pointVarName() {
-    return `${this.sdfVarName}p`;
-  }
-  get shader() {
-    return ``;
-  }
-  get pointShader() {
-    return `vec3 ${this.pointVarName}=pos.${this.pointVector};`;
-  }
-  get addExisting() {
-    return `res=opUnion(res,vec2(${this.sdfVarName},${this.materialId}));`;
-  }
-  get transformsShader() {
-    return joinLine(this.transforms);
-  }
-  get defaultTransformsShader() {
-    return joinLine(this.defaultTransforms);
-  }
-  get operationsBeforeShader() {
-    return joinLine(this.operationsBefore);
-  }
-  get operationsAfterShader() {
-    return joinLine(this.operationsAfter);
-  }
-  get operationsHalfShader() {
-    return joinLine(this.operationsHalf);
-  }
-  get operationsSymShader() {
-    return joinLine(this.operationsSym);
-  }
-  get totalShader() {
-    return joinLine(
-      compact([
-        this.pointShader,
-        this.operationsSymShader,
-        this.defaultTransformsShader,
-        this.transformsShader,
-        this.operationsBeforeShader,
-        this.shader,
-        this.operationsAfterShader,
-        this.operationsHalfShader,
-        this.isVisible ? this.addExisting : "",
-      ])
-    );
-  }
-  removeOperation(name: string) {
-    this.operationsBefore = this.operationsBefore.filter(
-      (e) => !e.includes(name)
-    );
-    this.operationsAfter = this.operationsAfter.filter(
-      (e) => !e.includes(name)
-    );
-    this.operationsHalf = this.operationsHalf.filter((e) => !e.includes(name));
-  }
   show() {
     this.isVisible = true;
     return this;
@@ -109,46 +89,74 @@ class PrimitiveSDF {
     this.isVisible = false;
     return this;
   }
-  getTranslateShader(x: number, y: number, z: number) {
-    return `${this.pointVarName}+=vec3(${toFixed2(x)},${toFixed2(y)},${toFixed2(
-      z
-    )});`;
+  // -- add end --
+  // -- positioning start --
+  get positionVector() {
+    return `vec3(${toFixed2(this.translateXValue)},${toFixed2(
+      this.translateYValue
+    )},${toFixed2(this.translateZValue)})`;
+  }
+  get positionShader() {
+    return `${this.pointVarName}=opPosition(${this.pointVarName},-${this.positionVector});`;
   }
   translate(x = 0, y = 0, z = 0) {
-    this.transforms.push(this.getTranslateShader(x, y, z));
+    this.translateXValue = x;
+    this.translateYValue = y;
+    this.translateZValue = z;
     return this;
   }
   translateX(value = 0) {
-    this.translate(value, 0, 0);
+    this.translate(value, this.translateYValue, this.translateZValue);
     return this;
   }
   translateY(value = 0) {
-    this.translate(0, value, 0);
+    this.translate(this.translateXValue, value, this.translateZValue);
     return this;
   }
   translateZ(value = 0) {
-    this.translate(0, 0, value);
+    this.translate(this.translateXValue, this.translateYValue, value);
     return this;
   }
-  getRotateShader(deg: number, axis: string) {
-    return `${this.pointVarName}=rotate${axis.toUpperCase()}(${
-      this.pointVarName
-    },${toFixed2(deg2rad(deg))});`;
+  get rotationVector() {
+    return `vec3(${toFixed2(this.rotateXValue)},${toFixed2(
+      this.rotateYValue
+    )},${toFixed2(this.rotateZValue)})`;
   }
-  rotate(deg = 0, axis = "x") {
-    this.transforms.push(this.getRotateShader(deg, axis));
+  get rotationShader() {
+    return joinLine([
+      `${this.pointVarName}=rotateX(${this.pointVarName},${toFixed2(
+        this.rotateXValue
+      )});`,
+      `${this.pointVarName}=rotateY(${this.pointVarName},${toFixed2(
+        this.rotateYValue
+      )});`,
+      `${this.pointVarName}=rotateZ(${this.pointVarName},${toFixed2(
+        this.rotateZValue
+      )});`,
+    ]);
+  }
+  rotate(x = 0, y = 0, z = 0, useDeg2rad = true) {
+    if (useDeg2rad) {
+      this.rotateXValue = deg2rad(x);
+      this.rotateYValue = deg2rad(y);
+      this.rotateZValue = deg2rad(z);
+    } else {
+      this.rotateXValue = x;
+      this.rotateYValue = y;
+      this.rotateZValue = z;
+    }
     return this;
   }
-  rotateX(deg = 0) {
-    this.rotate(deg, "x");
+  rotateX(value = 0) {
+    this.rotate(value, this.rotateYValue, this.rotateZValue);
     return this;
   }
-  rotateY(deg = 0) {
-    this.rotate(deg, "y");
+  rotateY(value = 0) {
+    this.rotate(this.rotateXValue, value, this.rotateZValue);
     return this;
   }
-  rotateZ(deg = 0) {
-    this.rotate(deg, "z");
+  rotateZ(value = 0) {
+    this.rotate(this.rotateXValue, this.rotateYValue, value);
     return this;
   }
   scale(x = 1, y = 1, z = 1) {
@@ -168,6 +176,30 @@ class PrimitiveSDF {
   scaleZ(value = 1) {
     this.scale(this.scaleXValue, this.scaleYValue, value);
     return this;
+  }
+  // -- positioning end --
+  // -- operations start --
+  get operationsBeforeShader() {
+    return joinLine(this.operationsBefore);
+  }
+  get operationsAfterShader() {
+    return joinLine(this.operationsAfter);
+  }
+  get operationsHalfShader() {
+    return joinLine(this.operationsHalf);
+  }
+  get operationsSymShader() {
+    return joinLine(this.operationsSym);
+  }
+  removeOperation(name: string) {
+    this.operationsBefore = this.operationsBefore.filter(
+      (e) => !e.includes(name)
+    );
+    this.operationsAfter = this.operationsAfter.filter(
+      (e) => !e.includes(name)
+    );
+    this.operationsHalf = this.operationsHalf.filter((e) => !e.includes(name));
+    this.operationsSym = this.operationsSym.filter((e) => !e.includes(name));
   }
   elongate(x = 0.1, y = 0.1, z = 0.1) {
     this.operationsBefore.push(
@@ -325,6 +357,7 @@ class PrimitiveSDF {
     this.half("z");
     return this;
   }
+  // -- operations end --
 }
 
 export { PrimitiveSDF };

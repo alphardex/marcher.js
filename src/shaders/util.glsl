@@ -42,6 +42,9 @@ const float TWO_PI=6.28318530718;
 #pragma glslify:opHalfX=require(glsl-sdf/extra/alterations/opHalfX)
 #pragma glslify:opHalfY=require(glsl-sdf/extra/alterations/opHalfY)
 #pragma glslify:opHalfZ=require(glsl-sdf/extra/alterations/opHalfZ)
+#pragma glslify:opPosition=require(glsl-sdf/extra/positioning/opPosition)
+#pragma glslify:opRotation=require(glsl-sdf/extra/positioning/opRotation)
+#pragma glslify:opSymXYZ=require(glsl-sdf/extra/positioning/opSymXYZ)
 
 // ray
 #pragma glslify:normalizeScreenCoords=require(glsl-takara/vector/normalizeScreenCoords)

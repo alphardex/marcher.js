@@ -59,8 +59,6 @@ class UberprimSDF extends PrimitiveSDF {
     this.uberHole = uberHole;
     this.uberBevel = uberBevel;
     this.uberCone = uberCone;
-
-    this.defaultTransforms.push(this.getRotateShader(90, "x"));
   }
   initActualParams() {
     const {
