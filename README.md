@@ -68,7 +68,6 @@ console.log(mar.fragmentShader);
 ## Features
 
 - Write raymarching code in JavaScript (fully customizable)
-- Zero dependency
 - Fully typed
 - Shadertoy support
 
