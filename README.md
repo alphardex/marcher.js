@@ -3,7 +3,7 @@
   <a href="https://www.npmjs.com/package/marcher.js" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/marcher.js.svg">
   </a>
-  <a href="#" target="_blank">
+  <a href="https://github.com/alphardex/marcher.js/blob/main/LICENSE" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
   <a href="https://twitter.com/alphardex007" target="_blank">
